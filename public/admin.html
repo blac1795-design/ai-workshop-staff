@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI 워크샵 스태프 - 관리자</title>
+<style>
+  :root{
+    --primary:#4f46e5; --primary-dark:#3730a3; --bg:#f4f5fb; --card:#ffffff;
+    --border:#e2e4ee; --text:#1f2330; --muted:#6b7280; --green:#16a34a; --red:#dc2626; --amber:#d97706;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:var(--bg);color:var(--text);}
+  header{background:var(--primary);color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;}
+  header h1{font-size:18px;margin:0;}
+  header button{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.4);color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;}
+  #loginScreen{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:12px;}
+  #loginScreen .box{background:var(--card);padding:32px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.06);width:320px;text-align:center;}
+  #loginScreen input{width:100%;padding:10px;margin:12px 0;border:1px solid var(--border);border-radius:8px;font-size:14px;}
+  #loginScreen button{width:100%;padding:10px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:14px;cursor:pointer;}
+  #app{display:none;max-width:1100px;margin:0 auto;padding:20px;}
+  .tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
+  .tabs button{padding:8px 16px;border:1px solid var(--border);background:#fff;border-radius:8px;cursor:pointer;font-size:13px;color:var(--text);}
+  .tabs button.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+  .panel{display:none;}
+  .panel.active{display:block;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;}
+  .card h2{margin:0 0 12px;font-size:15px;}
+  .card h3{margin:18px 0 8px;font-size:13px;color:var(--muted);}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th,td{padding:8px 6px;border-bottom:1px solid var(--border);text-align:left;vertical-align:middle;}
+  th{color:var(--muted);font-weight:600;font-size:12px;}
+  input,select,textarea{padding:7px 9px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit;}
+  textarea{width:100%;min-height:50px;resize:vertical;}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px;}
+  .row input,.row select{flex:1;min-width:80px;}
+  button.btn{padding:7px 14px;border:none;border-radius:6px;background:var(--primary);color:#fff;cursor:pointer;font-size:13px;}
+  button.btn.secondary{background:#fff;border:1px solid var(--border);color:var(--text);}
+  button.btn.danger{background:var(--red);}
+  button.btn.green{background:var(--green);}
+  button.btn:disabled{opacity:.5;cursor:not-allowed;}
+  .pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;}
+  .pill.none{background:#eef2ff;color:#4338ca;}
+  .pill.assigned{background:#fef3c7;color:var(--amber);}
+  .pill.pending{background:#fee2e2;color:var(--red);}
+  .pill.approved{background:#dcfce7;color:var(--green);}
+  .small{font-size:12px;color:var(--muted);}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:800px){.grid2{grid-template-columns:1fr;}}
+  .msg{font-size:13px;margin-top:6px;}
+  .msg.error{color:var(--red);}
+  .msg.ok{color:var(--green);}
+  .media-link{color:var(--primary);font-size:12px;}
+  .hint-tag{display:inline-block;background:#eef2ff;color:#4338ca;padding:3px 8px;border-radius:6px;font-size:12px;margin:2px;}
+  .hint-tag.auto{background:#fff7ed;color:#c2410c;}
+</style>
+</head>
+<body>
+
+<div id="loginScreen">
+  <div class="box">
+    <h2>🔐 관리자 로그인</h2>
+    <input type="password" id="pwInput" placeholder="관리자 비밀번호" />
+    <button onclick="login()">로그인</button>
+    <div class="msg error" id="loginMsg"></div>
+  </div>
+</div>
+
+<div id="app">
+  <header>
+    <h1>🎯 AI 워크샵 스태프 — 관리자</h1>
+    <button onclick="logout()">로그아웃</button>
+  </header>
+
+  <div style="padding:20px 24px;max-width:1100px;margin:0 auto;">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="participants">참여자 / 조 관리</button>
+      <button class="tab-btn" data-tab="missions">미션 풀</button>
+      <button class="tab-btn" data-tab="hints">힌트 풀 / 자동발송</button>
+      <button class="tab-btn" data-tab="monitor">진행 모니터링</button>
+    </div>
+
+    <!-- ===================== 참여자 / 조 관리 ===================== -->
+    <div class="panel active" id="panel-participants">
+      <div class="grid2">
+        <div class="card">
+          <h2>조(팀) 관리</h2>
+          <div class="row">
+            <input id="newTeamName" placeholder="새 조 이름 (예: 4조)" />
+            <button class="btn" onclick="addTeam()">추가</button>
+          </div>
+          <table>
+            <thead><tr><th>조</th><th>인원</th><th>조장</th><th></th></tr></thead>
+            <tbody id="teamTableBody"></tbody>
+            <tfoot id="teamTableFoot"></tfoot>
+          </table>
+        </div>
+
+        <div class="card">
+          <h2>참여자 등록</h2>
+          <div class="row">
+            <input id="pName" placeholder="이름" />
+            <input id="pCode" placeholder="부여코드" />
+          </div>
+          <div class="row">
+            <select id="pTeam"></select>
+            <label class="small"><input type="checkbox" id="pLeader" /> 조장</label>
+            <button class="btn" onclick="addParticipant()">등록</button>
+          </div>
+          <div class="msg" id="participantMsg"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>참여자 목록</h2>
+        <table>
+          <thead><tr><th>이름</th><th>부여코드</th><th>소속 조</th><th>조장</th><th></th></tr></thead>
+          <tbody id="participantTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===================== 미션 풀 ===================== -->
+    <div class="panel" id="panel-missions">
+      <div class="grid2">
+        <div class="card">
+          <h2>랜덤 미션 풀 (2단계 이후)</h2>
+          <div class="row">
+            <input id="missionTitle" placeholder="미션 제목" />
+          </div>
+          <textarea id="missionDesc" placeholder="미션 상세 설명"></textarea>
+          <div class="row" style="margin-top:8px;">
+            <button class="btn" onclick="addMission('missionPool')">추가</button>
+          </div>
+          <table>
+            <thead><tr><th>제목</th><th>설명</th><th></th></tr></thead>
+            <tbody id="missionPoolBody"></tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h2>점심식사 미션 풀 (2번째 미션 전용)</h2>
+          <div class="row">
+            <input id="lunchTitle" placeholder="미션 제목" />
+          </div>
+          <textarea id="lunchDesc" placeholder="미션 상세 설명"></textarea>
+          <div class="row" style="margin-top:8px;">
+            <button class="btn" onclick="addMission('lunchMissionPool')">추가</button>
+          </div>
+          <table>
+            <thead><tr><th>제목</th><th>설명</th><th></th></tr></thead>
+            <tbody id="lunchPoolBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 힌트 풀 / 자동발송 ===================== -->
+    <div class="panel" id="panel-hints">
+      <div class="grid2">
+        <div class="card">
+          <h2>힌트 풀</h2>
+          <div class="row">
+            <input id="hintContent" placeholder="힌트 내용" style="flex:3;" />
+          </div>
+          <div class="row">
+            <input type="file" id="hintImageFile" accept="image/*" style="flex:3;" />
+            <button class="btn" onclick="addHint()">추가</button>
+          </div>
+          <table>
+            <thead><tr><th>내용</th><th>이미지</th><th></th></tr></thead>
+            <tbody id="hintPoolBody"></tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h2>자동 힌트 발송 조건</h2>
+          <p class="small">조별 미션 성공 횟수(N회)에 도달하면 지정한 힌트를 자동 발송합니다.</p>
+          <div class="row">
+            <input id="ruleN" type="number" min="1" placeholder="N회 성공 시" style="flex:1;" />
+            <select id="ruleHint" style="flex:2;"></select>
+            <button class="btn" onclick="addRule()">조건 추가</button>
+          </div>
+          <table>
+            <thead><tr><th>조건</th><th>발송 힌트</th><th></th></tr></thead>
+            <tbody id="ruleTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 모니터링 ===================== -->
+    <div class="panel" id="panel-monitor">
+      <div class="card">
+        <h2>조별 진행 현황 <button class="btn secondary" style="float:right;" onclick="loadProgress()">새로고침</button></h2>
+        <div id="progressList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let ADMIN_PW = sessionStorage.getItem('adminPw') || '';
+
+function api(path, opts={}) {
+  opts.headers = Object.assign({}, opts.headers, { 'x-admin-password': ADMIN_PW });
+  if (opts.body && !(opts.body instanceof FormData)) {
+    opts.headers['Content-Type'] = 'application/json';
+    opts.body = JSON.stringify(opts.body);
+  }
+  return fetch(path, opts).then(async r=>{
+    const data = await r.json().catch(()=>({}));
+    if(!r.ok) throw new Error(data.error || '오류가 발생했습니다');
+    return data;
+  });
+}
+
+async function login(){
+  const pw = document.getElementById('pwInput').value;
+  try{
+    await fetch('/api/admin/login', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({password: pw})})
+      .then(async r=>{ const d = await r.json(); if(!r.ok) throw new Error(d.error); });
+    ADMIN_PW = pw;
+    sessionStorage.setItem('adminPw', pw);
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('app').style.display='block';
+    initApp();
+  }catch(e){
+    document.getElementById('loginMsg').textContent = e.message;
+  }
+}
+function logout(){
+  sessionStorage.removeItem('adminPw');
+  location.reload();
+}
+
+// tab switching
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+    if(btn.dataset.tab==='monitor') loadProgress();
+  });
+});
+
+async function initApp(){
+  await Promise.all([loadTeams(), loadParticipants(), loadMissions(), loadHints(), loadRules()]);
+}
+
+// ---------- teams ----------
+async function loadTeams(){
+  const teams = await api('/api/admin/teams');
+  const body = document.getElementById('teamTableBody');
+  body.innerHTML = '';
+  const foot = document.getElementById('teamTableFoot');
+  const sel = document.getElementById('pTeam');
+  sel.innerHTML = '';
+  let totalMembers = 0;
+  teams.forEach((t,idx)=>{
+    totalMembers += t.memberCount;
+    const memberNames = (t.members||[]).map(m=>`${escapeHtml(m.name)}${m.isLeader?' 👑조장':''}`).join(', ') || '(인원 없음)';
+    body.innerHTML += `<tr>
+        <td>${escapeHtml(t.name)}</td>
+        <td><a href="#" onclick="toggleMembers(event,${idx})" style="color:var(--primary);text-decoration:underline;">${t.memberCount}명</a></td>
+        <td>${t.leaderCount}명</td>
+        <td><button class="btn danger" onclick="deleteTeam('${encodeURIComponent(t.name)}')">삭제</button></td>
+      </tr>
+      <tr id="memberRow-${idx}" style="display:none;">
+        <td colspan="4" class="small" style="background:#f8f9fc;">👥 ${memberNames}</td>
+      </tr>`;
+    sel.innerHTML += `<option value="${t.name}">${t.name}</option>`;
+  });
+  foot.innerHTML = `<tr><td><strong>전체 합계</strong></td><td><strong>${totalMembers}명</strong></td><td></td><td></td></tr>`;
+}
+function toggleMembers(e, idx){
+  e.preventDefault();
+  const row = document.getElementById('memberRow-'+idx);
+  if(row) row.style.display = (row.style.display==='none') ? '' : 'none';
+}
+async function addTeam(){
+  const name = document.getElementById('newTeamName').value.trim();
+  if(!name) return;
+  await api('/api/admin/teams', {method:'POST', body:{name}});
+  document.getElementById('newTeamName').value='';
+  loadTeams();
+}
+async function deleteTeam(name){
+  if(!confirm('해당 조를 삭제하시겠습니까? (소속 참여자는 미배정 상태가 됩니다)')) return;
+  await api('/api/admin/teams/'+name, {method:'DELETE'});
+  loadTeams(); loadParticipants();
+}
+
+// ---------- participants ----------
+async function loadParticipants(){
+  const list = await api('/api/admin/participants');
+  const body = document.getElementById('participantTableBody');
+  body.innerHTML = '';
+  const teams = await api('/api/admin/teams');
+  list.forEach(p=>{
+    const teamOptions = teams.map(t=>`<option value="${t.name}" ${t.name===p.team?'selected':''}>${t.name}</option>`).join('');
+    body.innerHTML += `<tr>
+      <td><input value="${p.name}" onchange="updateParticipant('${p.id}',{name:this.value})" /></td>
+      <td><input value="${p.code}" onchange="updateParticipant('${p.id}',{code:this.value})" /></td>
+      <td><select onchange="updateParticipant('${p.id}',{team:this.value})">${teamOptions}</select></td>
+      <td><input type="checkbox" ${p.isLeader?'checked':''} onchange="updateParticipant('${p.id}',{isLeader:this.checked})" /></td>
+      <td><button class="btn danger" onclick="deleteParticipant('${p.id}')">삭제</button></td>
+    </tr>`;
+  });
+}
+async function addParticipant(){
+  const name = document.getElementById('pName').value.trim();
+  const code = document.getElementById('pCode').value.trim();
+  const team = document.getElementById('pTeam').value;
+  const isLeader = document.getElementById('pLeader').checked;
+  const msg = document.getElementById('participantMsg');
+  msg.className='msg'; msg.textContent='';
+  if(!name || !code || !team){ msg.className='msg error'; msg.textContent='이름, 부여코드, 조를 모두 입력하세요'; return; }
+  try{
+    await api('/api/admin/participants', {method:'POST', body:{name,code,team,isLeader}});
+    document.getElementById('pName').value='';
+    document.getElementById('pCode').value='';
+    document.getElementById('pLeader').checked=false;
+    msg.className='msg ok'; msg.textContent='등록되었습니다';
+    loadParticipants(); loadTeams();
+  }catch(e){ msg.className='msg error'; msg.textContent=e.message; }
+}
+async function updateParticipant(id, patch){
+  await api('/api/admin/participants/'+id, {method:'PUT', body:patch});
+  loadTeams();
+}
+async function deleteParticipant(id){
+  if(!confirm('삭제하시겠습니까?')) return;
+  await api('/api/admin/participants/'+id, {method:'DELETE'});
+  loadParticipants(); loadTeams();
+}
+
+// ---------- missions ----------
+async function loadMissions(){
+  const random = await api('/api/admin/missions');
+  const lunch = await api('/api/admin/lunch-missions');
+  renderMissionTable('missionPoolBody', random, 'missionPool');
+  renderMissionTable('lunchPoolBody', lunch, 'lunchMissionPool');
+}
+function renderMissionTable(bodyId, list, poolKey){
+  const body = document.getElementById(bodyId);
+  body.innerHTML='';
+  const endpoint = poolKey==='missionPool' ? '/api/admin/missions' : '/api/admin/lunch-missions';
+  list.forEach(m=>{
+    body.innerHTML += `<tr>
+      <td style="width:30%;"><input value="${escapeHtml(m.title)}" onchange="updateMission('${endpoint}','${m.id}',{title:this.value})" style="width:100%;" /></td>
+      <td><textarea rows="3" style="width:100%;min-width:200px;" onchange="updateMission('${endpoint}','${m.id}',{description:this.value})">${escapeHtml(m.description||'')}</textarea></td>
+      <td><button class="btn danger" onclick="deleteMission('${endpoint}','${m.id}')">삭제</button></td>
+    </tr>`;
+  });
+}
+async function addMission(poolKey){
+  const isLunch = poolKey==='lunchMissionPool';
+  const titleEl = document.getElementById(isLunch?'lunchTitle':'missionTitle');
+  const descEl = document.getElementById(isLunch?'lunchDesc':'missionDesc');
+  const title = titleEl.value.trim();
+  if(!title) return;
+  const endpoint = isLunch ? '/api/admin/lunch-missions' : '/api/admin/missions';
+  await api(endpoint, {method:'POST', body:{title, description: descEl.value}});
+  titleEl.value=''; descEl.value='';
+  loadMissions();
+}
+async function updateMission(endpoint, id, patch){
+  await api(endpoint+'/'+id, {method:'PUT', body:patch});
+}
+async function deleteMission(endpoint, id){
+  if(!confirm('삭제하시겠습니까?')) return;
+  await api(endpoint+'/'+id, {method:'DELETE'});
+  loadMissions(); loadRules();
+}
+
+// ---------- hints ----------
+async function loadHints(){
+  const hints = await api('/api/admin/hints');
+  const body = document.getElementById('hintPoolBody');
+  body.innerHTML='';
+  const sel = document.getElementById('ruleHint');
+  sel.innerHTML = hints.map(h=>`<option value="${h.id}">${escapeHtml(h.content)}</option>`).join('');
+  hints.forEach(h=>{
+    const imgHtml = h.image ? `<img src="${h.image}" style="max-width:60px;max-height:60px;border-radius:6px;display:block;margin-bottom:4px;" />` : '';
+    const removeBtn = h.image ? `<button class="btn danger" style="font-size:11px;padding:4px 8px;margin-top:4px;" onclick="removeHintImage('${h.id}')">이미지 제거</button>` : '';
+    body.innerHTML += `<tr>
+      <td><input value="${escapeHtml(h.content)}" onchange="updateHint('${h.id}',this.value)" /></td>
+      <td>${imgHtml}<input type="file" accept="image/*" style="font-size:11px;max-width:140px;" onchange="uploadHintImage('${h.id}',this)" />${removeBtn}</td>
+      <td><button class="btn danger" onclick="deleteHint('${h.id}')">삭제</button></td>
+    </tr>`;
+  });
+}
+async function addHint(){
+  const content = document.getElementById('hintContent').value.trim();
+  if(!content) return;
+  const fileEl = document.getElementById('hintImageFile');
+  let image = null;
+  if(fileEl.files.length){
+    const fd = new FormData();
+    fd.append('image', fileEl.files[0]);
+    const up = await api('/api/admin/hints/upload', {method:'POST', body:fd});
+    image = up.url;
+  }
+  await api('/api/admin/hints', {method:'POST', body:{content, image}});
+  document.getElementById('hintContent').value='';
+  fileEl.value='';
+  loadHints(); loadRules();
+}
+async function updateHint(id, content){
+  await api('/api/admin/hints/'+id, {method:'PUT', body:{content}});
+  loadRules();
+}
+async function uploadHintImage(id, inputEl){
+  if(!inputEl.files.length) return;
+  const fd = new FormData();
+  fd.append('image', inputEl.files[0]);
+  const up = await api('/api/admin/hints/upload', {method:'POST', body:fd});
+  await api('/api/admin/hints/'+id, {method:'PUT', body:{image: up.url}});
+  loadHints();
+}
+async function removeHintImage(id){
+  await api('/api/admin/hints/'+id, {method:'PUT', body:{image: null}});
+  loadHints();
+}
+async function deleteHint(id){
+  if(!confirm('삭제하시겠습니까? 관련 자동발송 조건도 함께 삭제됩니다.')) return;
+  await api('/api/admin/hints/'+id, {method:'DELETE'});
+  loadHints(); loadRules();
+}
+
+// ---------- auto hint rules ----------
+async function loadRules(){
+  const rules = await api('/api/admin/auto-hint-rules');
+  const hints = await api('/api/admin/hints');
+  const body = document.getElementById('ruleTableBody');
+  body.innerHTML='';
+  rules.forEach(r=>{
+    const hint = hints.find(h=>h.id===r.hintId);
+    body.innerHTML += `<tr>
+      <td>${r.afterSuccessCount}회 성공 시</td>
+      <td>${hint?escapeHtml(hint.content):'(삭제된 힌트)'}</td>
+      <td><button class="btn danger" onclick="deleteRule('${r.id}')">삭제</button></td>
+    </tr>`;
+  });
+}
+async function addRule(){
+  const n = document.getElementById('ruleN').value;
+  const hintId = document.getElementById('ruleHint').value;
+  if(!n || !hintId) return;
+  await api('/api/admin/auto-hint-rules', {method:'POST', body:{afterSuccessCount:n, hintId}});
+  document.getElementById('ruleN').value='';
+  loadRules();
+}
+async function deleteRule(id){
+  await api('/api/admin/auto-hint-rules/'+id, {method:'DELETE'});
+  loadRules();
+}
+
+// ---------- monitoring ----------
+const statusLabel = {none:'대기(다음 미션 받기 가능)', assigned:'미션 수행중', pending:'관리자 확인중', approved:'승인 완료'};
+const tfStatusLabel = {none:'미제출', pending:'확인 요청', approved:'승인 완료'};
+
+async function loadProgress(){
+  const progress = await api('/api/admin/progress');
+  const el = document.getElementById('progressList');
+  el.innerHTML = progress.map(p=>{
+    const mission = p.currentMission;
+    const tf = p.teamFinding || {status:'none', submission:null};
+    let mediaHtml = '';
+    if(p.submission){
+      const sub = p.submission;
+      if(sub.files){
+        // 신규 형식: 파일 0~2개 + 링크 + 메모 (모두 선택)
+        const parts = [];
+        sub.files.forEach((f,i)=>{
+          parts.push(`<a class="media-link" href="${f.value}" target="_blank">📎 첨부파일 ${i+1} 보기</a>`);
+        });
+        if(sub.link) parts.push(`<a class="media-link" href="${sub.link}" target="_blank">🔗 제출 링크 열기</a>`);
+        mediaHtml = parts.join('<br/>');
+        if(sub.note) mediaHtml += `<div class="small">메모: ${escapeHtml(sub.note)}</div>`;
+        if(!mediaHtml) mediaHtml = '<div class="small">첨부 없음</div>';
+      }else{
+        // 구버전 형식 (단일 파일 또는 링크)
+        if(sub.type==='file'){
+          mediaHtml = `<a class="media-link" href="${sub.value}" target="_blank">📎 업로드된 파일 보기</a>`;
+        }else{
+          mediaHtml = `<a class="media-link" href="${sub.value}" target="_blank">🔗 제출 링크 열기</a>`;
+        }
+        if(sub.note) mediaHtml += `<div class="small">메모: ${escapeHtml(sub.note)}</div>`;
+      }
+    }
+    let tfMediaHtml = '';
+    if(tf.submission){
+      if(tf.submission.type==='file'){
+        tfMediaHtml = `<a class="media-link" href="${tf.submission.value}" target="_blank">📎 업로드된 사진 보기</a>`;
+      }else{
+        tfMediaHtml = `<a class="media-link" href="${tf.submission.value}" target="_blank">🔗 제출 링크 열기</a>`;
+      }
+      if(tf.submission.note) tfMediaHtml += `<div class="small">메모: ${escapeHtml(tf.submission.note)}</div>`;
+    }
+    let tfActionHtml = '';
+    if(tf.status==='pending'){
+      tfActionHtml = `<button class="btn green" onclick="approveTeamFinding('${encodeURIComponent(p.team)}')">✅ 조원찾기 승인</button>
+                       <button class="btn danger" onclick="rejectTeamFinding('${encodeURIComponent(p.team)}')">↩️ 반려</button>`;
+    }
+    if(tf.status!=='none'){
+      tfActionHtml += `<button class="btn secondary" onclick="resetTeamFinding('${encodeURIComponent(p.team)}')">🔄 초기화</button>`;
+    }
+    const hintsHtml = p.hintsCollected.map(h=>`<span class="hint-tag ${h.type==='auto'?'auto':''}">${h.type==='auto'?'🔔':'🎁'} ${escapeHtml(h.content)}${h.image?`<br/><img src="${h.image}" style="max-width:80px;max-height:80px;border-radius:6px;margin-top:2px;" />`:''}</span>`).join('') || '<span class="small">아직 없음</span>';
+    const completedHtml = (p.completedMissions||[]).map(m=>
+      `<div class="small" style="margin-top:4px;">✅ <strong>${escapeHtml(m.title)}</strong> (${m.source==='lunch'?'점심':'랜덤'}, ${m.successCount}번째 성공)${m.description?`<div style="color:var(--muted);">${escapeHtml(m.description)}</div>`:''}</div>`
+    ).join('') || '<div class="small">아직 성공한 미션이 없습니다</div>';
+    let actionHtml = '';
+    if(p.missionStatus==='pending'){
+      actionHtml = `<button class="btn green" onclick="approveTeam('${encodeURIComponent(p.team)}')">✅ 승인(성공처리)</button>
+                     <button class="btn danger" onclick="rejectTeam('${encodeURIComponent(p.team)}')">↩️ 반려(재제출)</button>`;
+    }
+    return `<div class="card" style="margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <strong>${escapeHtml(p.team)}</strong>
+        <div>
+          <span class="pill ${p.missionStatus}">${statusLabel[p.missionStatus]||p.missionStatus}</span>
+          <button class="btn secondary" style="margin-left:6px;" onclick="resetProgress('${encodeURIComponent(p.team)}')">🔄 미션 진행 초기화</button>
+        </div>
+      </div>
+      <div style="margin-top:8px;border:1px solid var(--border);border-radius:8px;padding:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <strong class="small">📸 0단계 · 조원 찾기 인증사진</strong>
+          <span class="pill ${tf.status}">${tfStatusLabel[tf.status]||tf.status}</span>
+        </div>
+        ${tfMediaHtml ? `<div style="margin-top:6px;">${tfMediaHtml}</div>` : ''}
+        ${tfActionHtml ? `<div style="margin-top:8px;">${tfActionHtml}</div>` : ''}
+      </div>
+      <div class="small" style="margin-top:6px;">진행 미션 수: ${p.missionCount} · 성공 횟수: ${p.successCount} · 재추첨: ${p.redrawUsed?'사용함':'미사용'}</div>
+      ${mission ? `<div style="margin-top:8px;"><strong>현재 미션</strong> (${mission.source==='lunch'?'점심':'랜덤'}): ${escapeHtml(mission.title)}<div class="small">${escapeHtml(mission.description||'')}</div></div>` : '<div class="small" style="margin-top:8px;">현재 배정된 미션 없음</div>'}
+      ${mediaHtml ? `<div style="margin-top:8px;">${mediaHtml}</div>` : ''}
+      <div style="margin-top:8px;"><strong class="small">✅ 성공한 미션 목록</strong>${completedHtml}</div>
+      <div style="margin-top:8px;"><strong class="small">수집한 힌트</strong><br/>${hintsHtml}</div>
+      ${actionHtml ? `<div style="margin-top:10px;">${actionHtml}</div>` : ''}
+    </div>`;
+  }).join('') || '<p class="small">등록된 조가 없습니다.</p>';
+}
+async function approveTeam(team){
+  await api('/api/admin/teams/'+team+'/approve', {method:'POST'});
+  loadProgress();
+}
+async function rejectTeam(team){
+  const note = prompt('반려 사유(선택)') || '';
+  await api('/api/admin/teams/'+team+'/reject', {method:'POST', body:{note}});
+  loadProgress();
+}
+async function resetProgress(team){
+  if(!confirm('해당 조의 랜덤 미션 진행도(배정 미션, 성공 횟수, 수집한 힌트, 재추첨 여부 등)를 모두 초기화합니다. 0단계(조원 찾기) 상태는 유지됩니다. 계속할까요?')) return;
+  await api('/api/admin/teams/'+team+'/progress/reset', {method:'POST'});
+  loadProgress();
+}
+async function approveTeamFinding(team){
+  await api('/api/admin/teams/'+team+'/teamfinding/approve', {method:'POST'});
+  loadProgress();
+}
+async function rejectTeamFinding(team){
+  const note = prompt('반려 사유(선택)') || '';
+  await api('/api/admin/teams/'+team+'/teamfinding/reject', {method:'POST', body:{note}});
+  loadProgress();
+}
+async function resetTeamFinding(team){
+  if(!confirm('해당 조의 조원 찾기(0단계) 인증을 초기화합니다. 해당 조는 인증사진을 다시 제출해야 합니다. 계속할까요?')) return;
+  await api('/api/admin/teams/'+team+'/teamfinding/reset', {method:'POST'});
+  loadProgress();
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// auto-login if password cached
+if(ADMIN_PW){
+  api('/api/admin/teams').then(()=>{
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('app').style.display='block';
+    initApp();
+  }).catch(()=>{ sessionStorage.removeItem('adminPw'); });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI 워크샵 스태프</title>
+<style>
+  :root{
+    --primary:#4f46e5; --bg:#f4f5fb; --card:#ffffff; --border:#e2e4ee;
+    --text:#1f2330; --muted:#6b7280; --green:#16a34a; --red:#dc2626; --amber:#d97706;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:var(--bg);color:var(--text);}
+  .wrap{max-width:480px;margin:0 auto;padding:24px 16px;min-height:100vh;}
+  .center{display:flex;flex-direction:column;justify-content:center;min-height:90vh;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.03);}
+  h1{font-size:20px;margin:0 0 4px;text-align:center;}
+  h2{font-size:16px;margin:0 0 10px;}
+  p{line-height:1.6;font-size:14px;}
+  .subtitle{text-align:center;color:var(--muted);font-size:13px;margin-bottom:20px;}
+  input,textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;font-size:15px;margin-bottom:10px;font-family:inherit;}
+  textarea{resize:vertical;min-height:60px;}
+  button.btn{width:100%;padding:13px;border:none;border-radius:8px;background:var(--primary);color:#fff;font-size:15px;font-weight:600;cursor:pointer;}
+  button.btn.secondary{background:#fff;border:1px solid var(--border);color:var(--text);}
+  button.btn.green{background:var(--green);}
+  button.btn:disabled{opacity:.45;cursor:not-allowed;}
+  .warn{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;padding:12px 14px;border-radius:10px;font-size:13px;line-height:1.6;margin-bottom:14px;}
+  .warn.red{background:#fef2f2;border-color:#fecaca;color:#991b1b;}
+  .badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;background:#eef2ff;color:#4338ca;}
+  .badge.lunch{background:#fffbeb;color:#b45309;}
+  .msg{font-size:13px;margin-top:4px;}
+  .msg.error{color:var(--red);}
+  .hint-tag{display:block;background:#eef2ff;color:#4338ca;padding:10px 12px;border-radius:8px;font-size:13px;margin-bottom:6px;}
+  .hint-tag.auto{background:#fff7ed;color:#c2410c;}
+  .spinner{display:flex;flex-direction:column;align-items:center;gap:10px;padding:30px 0;}
+  .spinner .dot{width:14px;height:14px;border-radius:50%;background:var(--primary);animation:pulse 1s infinite ease-in-out;}
+  @keyframes pulse{0%,100%{opacity:.3;transform:scale(.8);}50%{opacity:1;transform:scale(1.1);}}
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .topbar .team{font-weight:700;font-size:16px;}
+  .small{font-size:12px;color:var(--muted);}
+  .note{font-size:12px;color:var(--amber);margin-top:8px;text-align:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== 1단계: 조원 찾기 ===== -->
+  <div id="screenLookup" class="center">
+    <h1>🎯 AI 워크샵</h1>
+    <div class="subtitle">먼저 본인의 이름과 부여코드를 입력해 주세요</div>
+    <div class="card">
+      <input id="lkName" placeholder="이름" />
+      <input id="lkCode" placeholder="부여코드" />
+      <button class="btn" onclick="lookup()">조 확인하기</button>
+      <div class="msg error" id="lkMsg"></div>
+    </div>
+  </div>
+
+  <!-- ===== 조 확인 결과 ===== -->
+  <div id="screenResult" class="center" style="display:none;">
+    <div class="card" style="text-align:center;">
+      <div class="small">조 확인 결과</div>
+      <h1 id="resultTeam" style="margin:10px 0;"></h1>
+      <div class="warn">⚠️ 이번 워크샵은 조별 미션이 다릅니다. 미션 내용이 다른 팀에 알려지는 순간 불리해질 수 있으니 정보 보안에 주의해 주세요!</div>
+      <div id="resultLeaderBox"></div>
+    </div>
+  </div>
+
+  <!-- ===== 0단계: 조원 찾기 인증 사진 ===== -->
+  <div id="screenTeamFinding" class="center" style="display:none;">
+    <div class="card" style="text-align:center;">
+      <div class="small" id="tfTeamName"></div>
+      <div class="warn">🔒 미션·힌트 정보는 다른 조에 절대 노출하지 마세요!</div>
+      <div id="teamFindingCard"></div>
+    </div>
+  </div>
+
+  <!-- ===== 조장 외 접근 차단 ===== -->
+  <div id="screenBlocked" class="center" style="display:none;">
+    <div class="card" style="text-align:center;">
+      <div class="small">조 확인 결과</div>
+      <h1 id="blockedTeam" style="margin:10px 0;"></h1>
+      <div class="warn red">다음 미션부터는 조장만 진행할 수 있습니다. 조장의 기기를 확인해주세요 📲</div>
+      <button class="btn secondary" style="margin-top:16px;" onclick="resetSession()">처음으로</button>
+    </div>
+  </div>
+
+  <!-- ===== 2~3단계: 조장 화면 ===== -->
+  <div id="screenLeader" style="display:none;">
+    <div class="topbar">
+      <div class="team" id="leaderTeamName"></div>
+    </div>
+    <div class="warn">🔒 미션·힌트 정보는 다른 조에 절대 노출하지 마세요!</div>
+
+    <!-- 미션 영역 -->
+    <div class="card" id="missionCard"></div>
+
+    <!-- 힌트 영역 -->
+    <div class="card">
+      <h2>🧩 수집한 힌트 (<span id="successCount">0</span>회 성공)</h2>
+      <div id="hintList"><div class="small">아직 수집한 힌트가 없습니다</div></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let state = JSON.parse(sessionStorage.getItem('workshopUser') || 'null');
+let pollTimer = null;
+let tfPollTimer = null;
+let lastHintCount = 0;
+
+function api(path, opts={}){
+  if(opts.body && !(opts.body instanceof FormData)){
+    opts.headers = Object.assign({}, opts.headers, {'Content-Type':'application/json'});
+    opts.body = JSON.stringify(opts.body);
+  }
+  return fetch(path, opts).then(async r=>{
+    const data = await r.json().catch(()=>({}));
+    if(!r.ok) throw new Error(data.error || '오류가 발생했습니다');
+    return data;
+  });
+}
+
+function show(id){
+  ['screenLookup','screenResult','screenTeamFinding','screenBlocked','screenLeader'].forEach(s=>{
+    document.getElementById(s).style.display = (s===id) ? '' : 'none';
+  });
+}
+
+async function lookup(){
+  const name = document.getElementById('lkName').value.trim();
+  const code = document.getElementById('lkCode').value.trim();
+  const msg = document.getElementById('lkMsg');
+  msg.textContent='';
+  if(!name || !code){ msg.textContent='이름과 부여코드를 입력해주세요'; return; }
+  try{
+    const res = await api('/api/team-lookup', {method:'POST', body:{name, code}});
+    state = res;
+    sessionStorage.setItem('workshopUser', JSON.stringify(res));
+    renderResult(res);
+  }catch(e){
+    msg.textContent = e.message;
+  }
+}
+
+function renderResult(res){
+  document.getElementById('resultTeam').textContent = `당신은 ${res.team}입니다`;
+  const box = document.getElementById('resultLeaderBox');
+  box.innerHTML = `<button class="btn" onclick="proceedToTeamFinding()">다음 단계로</button>`;
+  show('screenResult');
+}
+
+// ---------- 0단계: 조원 찾기 인증 사진 ----------
+async function proceedToTeamFinding(){
+  try{
+    const st = await api('/api/team/'+encodeURIComponent(state.team)+'/state');
+    branchByTeamFinding(st.teamFinding);
+  }catch(e){
+    showTeamFinding({status:'none', submission:null});
+  }
+}
+
+function branchByTeamFinding(tf){
+  if(tf && tf.status === 'approved'){
+    if(state.isLeader){ goLeader(); } else { showBlocked(); }
+  }else{
+    showTeamFinding(tf || {status:'none', submission:null});
+  }
+}
+
+function showTeamFinding(tf){
+  document.getElementById('tfTeamName').textContent = `${state.team} · 조원 찾기 미션`;
+  show('screenTeamFinding');
+  renderTeamFinding(tf);
+  if(tf.status === 'pending'){
+    startTeamFindingPoll();
+  }
+}
+
+function renderTeamFinding(tf){
+  const el = document.getElementById('teamFindingCard');
+  if(tf.status === 'pending'){
+    el.innerHTML = `<div class="spinner"><div class="dot"></div><h2>관리자 확인 중...</h2>
+      <p class="small">제출한 사진을 관리자가 확인하고 있습니다. 잠시만 기다려주세요.</p></div>
+      <button class="btn secondary" style="margin-top:16px;" onclick="resetSession()">처음으로</button>`;
+  }else{
+    el.innerHTML = `
+      <h2>📸 사진을 찍어 조장을 확인해보세요!</h2>
+      <p>같은 조원들과 함께 사진을 찍어 업로드해주세요.</p>
+      <input type="file" id="tfMediaFile" accept="image/*,video/*" />
+      <div class="small" style="margin:6px 0;">또는</div>
+      <input type="text" id="tfMediaLink" placeholder="사진 외부 링크 (URL)" />
+      <textarea id="tfMediaNote" placeholder="메모 (선택)"></textarea>
+      <button class="btn green" onclick="submitTeamFinding()">제출하기</button>
+      <div class="msg error" id="tfMsg"></div>
+      <button class="btn secondary" style="margin-top:8px;" onclick="resetSession()">처음으로</button>`;
+  }
+}
+
+async function submitTeamFinding(){
+  const fileEl = document.getElementById('tfMediaFile');
+  const link = document.getElementById('tfMediaLink').value.trim();
+  const note = document.getElementById('tfMediaNote').value.trim();
+  const msg = document.getElementById('tfMsg');
+  msg.textContent='';
+  if(!fileEl.files.length && !link){ msg.textContent='사진 파일 또는 링크를 입력해주세요'; return; }
+  const fd = new FormData();
+  if(fileEl.files.length) fd.append('media', fileEl.files[0]);
+  if(link) fd.append('link', link);
+  fd.append('note', note);
+  try{
+    const res = await api('/api/team/'+encodeURIComponent(state.team)+'/teamfinding/submit', {method:'POST', body:fd});
+    renderTeamFinding(res.teamFinding);
+    startTeamFindingPoll();
+  }catch(e){
+    msg.textContent = e.message;
+  }
+}
+
+function startTeamFindingPoll(){
+  if(tfPollTimer) return;
+  tfPollTimer = setInterval(async ()=>{
+    try{
+      const st = await api('/api/team/'+encodeURIComponent(state.team)+'/state');
+      if(st.teamFinding.status !== 'pending'){
+        clearInterval(tfPollTimer); tfPollTimer=null;
+        branchByTeamFinding(st.teamFinding);
+      }
+    }catch(e){ /* ignore transient errors */ }
+  }, 4000);
+}
+
+function showBlocked(){
+  document.getElementById('blockedTeam').textContent = `당신은 ${state.team}입니다`;
+  show('screenBlocked');
+}
+
+function goLeader(){
+  document.getElementById('leaderTeamName').textContent = `${state.team} (조장)`;
+  show('screenLeader');
+  refreshAll();
+}
+
+function resetSession(){
+  sessionStorage.removeItem('workshopUser');
+  if(pollTimer) clearInterval(pollTimer);
+  if(tfPollTimer) clearInterval(tfPollTimer);
+  location.reload();
+}
+
+async function refreshAll(){
+  await refreshHints();
+  await refreshMission();
+}
+
+// ---------- mission ----------
+async function checkRejection(st){
+  if(st.pendingRejection){
+    const note = (st.pendingRejection.note || '').trim();
+    alert('❌ 미션이 반려되었습니다.\n' + (note ? ('반려 사유: ' + note) : '내용을 다시 확인하여 재제출해주세요.'));
+    try{
+      await api('/api/team/'+encodeURIComponent(state.team)+'/mission/ack-rejection', {method:'POST'});
+    }catch(e){ /* ignore */ }
+  }
+}
+
+async function refreshMission(){
+  const st = await api('/api/team/'+encodeURIComponent(state.team)+'/state');
+  await checkRejection(st);
+  renderMission(st);
+  if(st.missionStatus === 'pending'){
+    if(!pollTimer) pollTimer = setInterval(pollPending, 4000);
+  }else{
+    if(pollTimer){ clearInterval(pollTimer); pollTimer=null; }
+  }
+}
+
+async function pollPending(){
+  const st = await api('/api/team/'+encodeURIComponent(state.team)+'/state');
+  if(st.missionStatus !== 'pending'){
+    clearInterval(pollTimer); pollTimer=null;
+    await refreshHints(true);
+    await checkRejection(st);
+    renderMission(st);
+  }
+}
+
+function renderMission(st){
+  const el = document.getElementById('missionCard');
+  if(st.missionStatus === 'none'){
+    el.innerHTML = `<h2>다음 미션을 받아보세요</h2>
+      <p class="small">버튼을 누르면 랜덤 미션이 배정됩니다. 2번째 미션은 점심식사 미션 중에서 자동으로 배정됩니다.</p>
+      <button class="btn" onclick="assignMission()">🎲 미션 받기</button>
+      <div class="msg error" id="missionMsg"></div>`;
+  }else if(st.missionStatus === 'assigned'){
+    const m = st.currentMission;
+    el.innerHTML = `
+      <span class="badge ${m.source==='lunch'?'lunch':''}">${m.source==='lunch'?'🍱 점심식사 미션':'🎯 랜덤 미션'}</span>
+      <h2 style="margin-top:10px;">${escapeHtml(m.title)}</h2>
+      <p>${escapeHtml(m.description||'')}</p>
+      <button class="btn secondary" id="redrawBtn" onclick="redraw()" ${st.redrawUsed?'disabled':''}>
+        🔁 ${st.redrawUsed?'재추첨 기회를 이미 사용했습니다':'미션 재추첨'}
+      </button>
+      <div class="note">⚠️ 재추첨은 단 1회만 가능합니다</div>
+      <hr style="border:none;border-top:1px solid var(--border);margin:16px 0;" />
+      <h2>미션 수행 결과 제출</h2>
+      <p class="small">사진/영상(최대 2개), 외부 링크, 메모 중 하나 이상을 입력하면 제출할 수 있습니다.</p>
+      <input type="file" id="mediaFile" accept="image/*,video/*" multiple />
+      <div class="small" style="margin:6px 0;">또는</div>
+      <input type="text" id="mediaLink" placeholder="사진/영상 외부 링크 (URL)" />
+      <textarea id="mediaNote" placeholder="메모 (선택, 메모만 제출도 가능)"></textarea>
+      <button class="btn green" onclick="submitMission()">제출하기</button>
+      <div class="msg error" id="missionMsg"></div>`;
+  }else if(st.missionStatus === 'pending'){
+    el.innerHTML = `<div class="spinner"><div class="dot"></div><h2>관리자 확인 중...</h2>
+      <p class="small">제출한 내용을 관리자가 확인하고 있습니다. 잠시만 기다려주세요.</p></div>`;
+  }
+}
+
+async function assignMission(){
+  try{
+    const res = await api('/api/team/'+encodeURIComponent(state.team)+'/mission/assign', {method:'POST'});
+    renderMission({missionStatus:'assigned', currentMission:res.mission, redrawUsed:res.redrawUsed});
+  }catch(e){
+    document.getElementById('missionMsg').textContent = e.message;
+  }
+}
+
+async function redraw(){
+  if(!confirm('재추첨은 단 1회만 가능합니다. 정말 다시 뽑으시겠습니까?')) return;
+  try{
+    const res = await api('/api/team/'+encodeURIComponent(state.team)+'/mission/redraw', {method:'POST'});
+    renderMission({missionStatus:'assigned', currentMission:res.mission, redrawUsed:res.redrawUsed});
+  }catch(e){
+    document.getElementById('missionMsg').textContent = e.message;
+  }
+}
+
+async function submitMission(){
+  const fileEl = document.getElementById('mediaFile');
+  const link = document.getElementById('mediaLink').value.trim();
+  const note = document.getElementById('mediaNote').value.trim();
+  const msg = document.getElementById('missionMsg');
+  msg.textContent='';
+  if(fileEl.files.length > 2){ msg.textContent='사진/영상은 최대 2개까지 첨부할 수 있습니다'; return; }
+  if(!fileEl.files.length && !link && !note){ msg.textContent='사진/영상, 링크, 메모 중 하나 이상을 입력해주세요'; return; }
+  const fd = new FormData();
+  for(const f of fileEl.files) fd.append('media', f);
+  if(link) fd.append('link', link);
+  fd.append('note', note);
+  try{
+    await api('/api/team/'+encodeURIComponent(state.team)+'/mission/submit', {method:'POST', body:fd});
+    refreshMission();
+  }catch(e){
+    msg.textContent = e.message;
+  }
+}
+
+// ---------- hints ----------
+async function refreshHints(announceNew){
+  const data = await api('/api/team/'+encodeURIComponent(state.team)+'/hints');
+  document.getElementById('successCount').textContent = data.successCount;
+  const list = document.getElementById('hintList');
+  if(data.hintsCollected.length === 0){
+    list.innerHTML = '<div class="small">아직 수집한 힌트가 없습니다</div>';
+  }else{
+    list.innerHTML = data.hintsCollected.map((h,i)=>
+      `<div class="hint-tag ${h.type==='auto'?'auto':''}">${h.type==='auto'?'🔔 자동 발송':'🎁 미션 성공 보상'}: ${escapeHtml(h.content)}${h.image?`<br/><a href="#" onclick="toggleHintImage(event,${i})" style="font-size:12px;text-decoration:underline;">🖼 이미지 보기</a><div id="hintImg-${i}" style="display:none;margin-top:6px;"><img src="${h.image}" style="max-width:100%;border-radius:8px;" /></div>`:''}</div>`
+    ).join('');
+  }
+  if(announceNew && data.hintsCollected.length > lastHintCount){
+    alert('🎉 미션 성공! 새로운 힌트를 획득했습니다.\n⚠️ 획득한 힌트는 다른 조에 노출되지 않도록 주의하세요!');
+  }
+  lastHintCount = data.hintsCollected.length;
+}
+
+function toggleHintImage(e, idx){
+  e.preventDefault();
+  const el = document.getElementById('hintImg-'+idx);
+  if(el) el.style.display = (el.style.display==='none') ? '' : 'none';
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ---------- init ----------
+if(state){
+  proceedToTeamFinding();
+}else{
+  show('screenLookup');
+}
+</script>
+</body>
+</html>

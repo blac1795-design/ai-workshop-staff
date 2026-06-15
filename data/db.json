@@ -1,0 +1,1927 @@
+{
+  "config": {
+    "adminPassword": "admin1234",
+    "autoHintRules": [
+      {
+        "id": "r_1781505739130_j8aeex",
+        "afterSuccessCount": 5,
+        "hintId": "h_1781504466636_xe690x"
+      }
+    ]
+  },
+  "teams": [
+    "1조",
+    "2조",
+    "3조",
+    "4조",
+    "5조"
+  ],
+  "participants": [
+    {
+      "id": "p_1781501126822_8tqydy",
+      "name": "최준호",
+      "code": "900117",
+      "team": "1조",
+      "isLeader": true
+    },
+    {
+      "id": "p_1781501134287_m5zx5e",
+      "name": "안소정",
+      "code": "1111",
+      "team": "1조",
+      "isLeader": false
+    },
+    {
+      "id": "p_1781503802289_wy4p69",
+      "name": "최상규",
+      "code": "2222",
+      "team": "2조",
+      "isLeader": true
+    },
+    {
+      "id": "p_1781503812972_llz8q7",
+      "name": "황지혜",
+      "code": "2222",
+      "team": "2조",
+      "isLeader": false
+    },
+    {
+      "id": "p_1781503825137_2szsau",
+      "name": "김정환",
+      "code": "3333",
+      "team": "3조",
+      "isLeader": true
+    },
+    {
+      "id": "p_1781503834327_wegjbx",
+      "name": "이재민",
+      "code": "3333",
+      "team": "3조",
+      "isLeader": false
+    },
+    {
+      "id": "p_1781503846990_q859jp",
+      "name": "김세훈",
+      "code": "4444",
+      "team": "4조",
+      "isLeader": false
+    },
+    {
+      "id": "p_1781503863992_slevfv",
+      "name": "윤예린",
+      "code": "4444",
+      "team": "4조",
+      "isLeader": true
+    },
+    {
+      "id": "p_1781507855801_7tjphq",
+      "name": "이홍주",
+      "code": "11",
+      "team": "1조",
+      "isLeader": false
+    },
+    {
+      "id": "p_1781507860665_24ci3y",
+      "name": "양창훈",
+      "code": "1111",
+      "team": "1조",
+      "isLeader": false
+    },
+    {
+      "id": "p_1781507877517_6aegr4",
+      "name": "김연원",
+      "code": "111",
+      "team": "1조",
+      "isLeader": false
+    },
+    {
+      "id": "p_1781507885314_zjwhn7",
+      "name": "라기선",
+      "code": "1111",
+      "team": "1조",
+      "isLeader": false
+    },
+    {
+      "id": "p_1781507893447_o14vhl",
+      "name": "박필건",
+      "code": "111",
+      "team": "1조",
+      "isLeader": false
+    },
+    {
+      "id": "p_1781507897870_b7ia8l",
+      "name": "최정현",
+      "code": "1111",
+      "team": "1조",
+      "isLeader": false
+    },
+    {
+      "id": "p_1781507903849_80bct8",
+      "name": "박재규",
+      "code": "1111",
+      "team": "1조",
+      "isLeader": false
+    }
+  ],
+  "missionPool": [
+    {
+      "id": "m_1781504310569_2gvlr9",
+      "title": "테스트1",
+      "description": "테스트1"
+    },
+    {
+      "id": "m_1781504327270_9ofgpw",
+      "title": "테스트2",
+      "description": "테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2테스트2"
+    },
+    {
+      "id": "m_1781504353370_5e8pf2",
+      "title": "테스트3",
+      "description": "테스트3\n테스트3\n테스트3\n테스트3\n테스트3\n테스트3\n"
+    },
+    {
+      "id": "m_1781504359336_f8h1j3",
+      "title": "테스트4",
+      "description": "테스4"
+    },
+    {
+      "id": "m_1781504366486_lfpge2",
+      "title": "테스트5",
+      "description": "테스트5"
+    },
+    {
+      "id": "m_1781504375754_3joh7v",
+      "title": "테스트6",
+      "description": "테스트6"
+    },
+    {
+      "id": "m_1781504380270_lz8y0g",
+      "title": "테7",
+      "description": "테7"
+    },
+    {
+      "id": "m_1781504386118_twqgcv",
+      "title": "테8",
+      "description": "테8"
+    },
+    {
+      "id": "m_1781504392803_4g6pf0",
+      "title": "테9",
+      "description": "테9"
+    },
+    {
+      "id": "m_1781504401452_an94ig",
+      "title": "테10",
+      "description": "테10"
+    }
+  ],
+  "lunchMissionPool": [
+    {
+      "id": "m_1781504107404_n3foar",
+      "title": "맛나는 점심식사!",
+      "description": "첫번째 미션은 다들 클리어했나요?! 이제 점심드실 시간이에요! 자유롭게 식사 하시고영수증 음식사진, 영수증 사진 찍어서 올려주세요!식사비 한도은 인당 5,000원 입니다!(커피 포함)"
+    },
+    {
+      "id": "m_1781504144988_hnu5u4",
+      "title": "맛나는 점심식사!",
+      "description": "첫번째 미션은 다들 클리어했나요?! 이제 점심드실 시간이에요! 자유롭게 식사 하시고영수증 음식사진, 영수증 사진 찍어서 올려주세요!식사비 한도은 인당 15,000원 입니다!(후식 포함)"
+    },
+    {
+      "id": "m_1781504203603_clo48q",
+      "title": "맛있는 점심식사!",
+      "description": "첫번째 미션은 다들 클리어했나요?! \n이제 점심드실 시간이에요! 자유롭게 식사 하시고\n영수증 음식사진, 영수증 사진 찍어서 올려주세요!\n식사비 한도은 인당 30,000원 입니다!(커피 포함)"
+    }
+  ],
+  "hintPool": [
+    {
+      "id": "h_1781504410788_dmfniu",
+      "content": "힌1",
+      "image": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781508879253_736lhg.png"
+    },
+    {
+      "id": "h_1781504414483_m5amyz",
+      "content": "힌2",
+      "image": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781508895099_3ih6mf.png"
+    },
+    {
+      "id": "h_1781504416818_b3x7x2",
+      "content": "힌3"
+    },
+    {
+      "id": "h_1781504419568_pyh58f",
+      "content": "힌4"
+    },
+    {
+      "id": "h_1781504423085_6luffm",
+      "content": "힌5"
+    },
+    {
+      "id": "h_1781504426101_n9sw2v",
+      "content": "흰6"
+    },
+    {
+      "id": "h_1781504430720_0l3nyg",
+      "content": "ㅇ7"
+    },
+    {
+      "id": "h_1781504433351_klq18k",
+      "content": "8"
+    },
+    {
+      "id": "h_1781504435167_ymlyvp",
+      "content": "9"
+    },
+    {
+      "id": "h_1781504437870_em3o0q",
+      "content": "10"
+    },
+    {
+      "id": "h_1781504440051_zy4zyr",
+      "content": "11"
+    },
+    {
+      "id": "h_1781504441701_tnf6je",
+      "content": "12"
+    },
+    {
+      "id": "h_1781504444001_da9wlj",
+      "content": "13"
+    },
+    {
+      "id": "h_1781504447835_tq1es5",
+      "content": "14"
+    },
+    {
+      "id": "h_1781504450086_dn3rn9",
+      "content": "15"
+    },
+    {
+      "id": "h_1781504452285_bm1gfq",
+      "content": "16"
+    },
+    {
+      "id": "h_1781504466636_xe690x",
+      "content": "흰 17 그냥 거의 정답"
+    }
+  ],
+  "teamStates": {
+    "1조": {
+      "teamFinding": {
+        "status": "approved",
+        "submission": {
+          "type": "file",
+          "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781506244265_8sjm38.png",
+          "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 3.06.17.png",
+          "note": "",
+          "submittedAt": "2026-06-15T06:50:44.267Z"
+        }
+      },
+      "assignedMissionIds": [
+        "m_1781504375754_3joh7v",
+        "m_1781504203603_clo48q",
+        "m_1781504392803_4g6pf0",
+        "m_1781504310569_2gvlr9",
+        "m_1781504353370_5e8pf2",
+        "m_1781504386118_twqgcv",
+        "m_1781504359336_f8h1j3"
+      ],
+      "redrawUsed": true,
+      "currentMission": {
+        "id": "m_1781504359336_f8h1j3",
+        "title": "테스트4",
+        "description": "테스4",
+        "source": "random"
+      },
+      "missionStatus": "assigned",
+      "submission": null,
+      "successCount": 6,
+      "hintsCollected": [
+        {
+          "id": "h_1781504414483_m5amyz",
+          "content": "힌2",
+          "type": "random",
+          "receivedAt": "2026-06-15T06:51:20.946Z"
+        },
+        {
+          "id": "h_1781504433351_klq18k",
+          "content": "8",
+          "type": "random",
+          "receivedAt": "2026-06-15T06:53:20.079Z"
+        },
+        {
+          "id": "h_1781504440051_zy4zyr",
+          "content": "11",
+          "type": "random",
+          "receivedAt": "2026-06-15T06:53:57.429Z"
+        },
+        {
+          "id": "h_1781504423085_6luffm",
+          "content": "힌5",
+          "type": "random",
+          "receivedAt": "2026-06-15T06:54:38.797Z"
+        },
+        {
+          "id": "h_1781504426101_n9sw2v",
+          "content": "흰6",
+          "type": "random",
+          "receivedAt": "2026-06-15T06:55:11.696Z"
+        },
+        {
+          "id": "h_1781504466636_xe690x",
+          "content": "흰 17 그냥 거의 정답",
+          "type": "auto",
+          "receivedAt": "2026-06-15T06:55:11.696Z"
+        },
+        {
+          "id": "h_1781504444001_da9wlj",
+          "content": "13",
+          "image": null,
+          "type": "random",
+          "receivedAt": "2026-06-15T07:35:16.549Z"
+        }
+      ],
+      "autoHintsSent": [
+        "r_1781505739130_j8aeex"
+      ],
+      "finished": false,
+      "history": [
+        {
+          "at": "2026-06-15T05:45:03.891Z",
+          "event": "teamfinding_submitted",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/5d86d53783873145543e219c3a4f252d.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 2.26.05.png",
+            "note": "",
+            "submittedAt": "2026-06-15T05:45:03.891Z"
+          }
+        },
+        {
+          "at": "2026-06-15T05:45:38.763Z",
+          "event": "teamfinding_approved",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/5d86d53783873145543e219c3a4f252d.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 2.26.05.png",
+            "note": "",
+            "submittedAt": "2026-06-15T05:45:03.891Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:02:36.719Z",
+          "event": "teamfinding_submitted",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781503356713_xpqz8t.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 2.51.13.png",
+            "note": "",
+            "submittedAt": "2026-06-15T06:02:36.719Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:02:49.224Z",
+          "event": "teamfinding_approved",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781503356713_xpqz8t.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 2.51.13.png",
+            "note": "",
+            "submittedAt": "2026-06-15T06:02:36.719Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:03:02.225Z",
+          "event": "teamfinding_reset",
+          "detail": {}
+        },
+        {
+          "at": "2026-06-15T06:08:29.642Z",
+          "event": "teamfinding_submitted",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781503709640_udir2x.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 3.06.17.png",
+            "note": "",
+            "submittedAt": "2026-06-15T06:08:29.642Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:08:38.269Z",
+          "event": "teamfinding_approved",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781503709640_udir2x.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 3.06.17.png",
+            "note": "",
+            "submittedAt": "2026-06-15T06:08:29.642Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:08:52.469Z",
+          "event": "teamfinding_reset",
+          "detail": {}
+        },
+        {
+          "at": "2026-06-15T06:21:25.635Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504380270_lz8y0g",
+            "title": "테7",
+            "description": "테7",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T06:21:50.706Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781504510704_hz37dk.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 3.06.17.png",
+            "note": "거북이",
+            "submittedAt": "2026-06-15T06:21:50.706Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:22:04.186Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504380270_lz8y0g",
+              "title": "테7",
+              "description": "테7",
+              "source": "random"
+            },
+            "successCount": 1
+          }
+        },
+        {
+          "at": "2026-06-15T06:22:15.387Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504144988_hnu5u4",
+            "title": "맛나는 점심식사!",
+            "description": "첫번째 미션은 다들 클리어했나요?! 이제 점심드실 시간이에요! 자유롭게 식사 하시고영수증 음식사진, 영수증 사진 찍어서 올려주세요!식사비 한도은 인당 15,000원 입니다!(후식 포함)",
+            "source": "lunch"
+          }
+        },
+        {
+          "at": "2026-06-15T06:22:20.845Z",
+          "event": "mission_redrawn",
+          "detail": {
+            "id": "m_1781504203603_clo48q",
+            "title": "맛있는 점심식사!",
+            "description": "첫번째 미션은 다들 클리어했나요?! \n이제 점심드실 시간이에요! 자유롭게 식사 하시고\n영수증 음식사진, 영수증 사진 찍어서 올려주세요!\n식사비 한도은 인당 30,000원 입니다!(커피 포함)",
+            "source": "lunch"
+          }
+        },
+        {
+          "at": "2026-06-15T06:22:38.807Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781504558803_acegvo.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 3.06.17.png",
+            "note": "ㅇㅇㅇ",
+            "submittedAt": "2026-06-15T06:22:38.807Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:22:49.353Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504203603_clo48q",
+              "title": "맛있는 점심식사!",
+              "description": "첫번째 미션은 다들 클리어했나요?! \n이제 점심드실 시간이에요! 자유롭게 식사 하시고\n영수증 음식사진, 영수증 사진 찍어서 올려주세요!\n식사비 한도은 인당 30,000원 입니다!(커피 포함)",
+              "source": "lunch"
+            },
+            "successCount": 2
+          }
+        },
+        {
+          "at": "2026-06-15T06:22:56.703Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504359336_f8h1j3",
+            "title": "테스트4",
+            "description": "테스4",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T06:24:50.104Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "link",
+            "value": "ㄴㅇㄹㄴㅇ",
+            "note": "ㄴㄹㄴㅇㄹ",
+            "submittedAt": "2026-06-15T06:24:50.104Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:25:02.360Z",
+          "event": "mission_rejected",
+          "detail": {
+            "mission": {
+              "id": "m_1781504359336_f8h1j3",
+              "title": "테스트4",
+              "description": "테스4",
+              "source": "random"
+            },
+            "note": "다시!"
+          }
+        },
+        {
+          "at": "2026-06-15T06:25:14.819Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "link",
+            "value": "ㄴㄹㅇㄴ",
+            "note": "ㄴㅇㄹㅇㄴㄹ",
+            "submittedAt": "2026-06-15T06:25:14.819Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:25:26.276Z",
+          "event": "mission_rejected",
+          "detail": {
+            "mission": {
+              "id": "m_1781504359336_f8h1j3",
+              "title": "테스트4",
+              "description": "테스4",
+              "source": "random"
+            },
+            "note": "다시!"
+          }
+        },
+        {
+          "at": "2026-06-15T06:25:32.586Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "link",
+            "value": "ㄴㄹㅇㄴㄹ",
+            "note": "ㄴㅇㄹㅇㄴㄹㄴ",
+            "submittedAt": "2026-06-15T06:25:32.585Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:25:37.514Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504359336_f8h1j3",
+              "title": "테스트4",
+              "description": "테스4",
+              "source": "random"
+            },
+            "successCount": 3
+          }
+        },
+        {
+          "at": "2026-06-15T06:26:20.852Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504386118_twqgcv",
+            "title": "테8",
+            "description": "테8",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T06:26:31.571Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "link",
+            "value": "ㄴㄹㅇㄴㄹ",
+            "note": "ㄴㄹㅇㄴㄹㄴ",
+            "submittedAt": "2026-06-15T06:26:31.571Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:26:36.699Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504386118_twqgcv",
+              "title": "테8",
+              "description": "테8",
+              "source": "random"
+            },
+            "successCount": 4
+          }
+        },
+        {
+          "at": "2026-06-15T06:26:50.887Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504366486_lfpge2",
+            "title": "테스트5",
+            "description": "테스트5",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T06:26:56.351Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "link",
+            "value": "ㄴㄹㅇㄴㄹㅇㄴ",
+            "note": "ㄴㅇㄹㅇㄴㄹㅇㄴㄹㄴㅇ",
+            "submittedAt": "2026-06-15T06:26:56.351Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:27:02.238Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504366486_lfpge2",
+              "title": "테스트5",
+              "description": "테스트5",
+              "source": "random"
+            },
+            "successCount": 5
+          }
+        },
+        {
+          "at": "2026-06-15T06:27:16.169Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504401452_an94ig",
+            "title": "테10",
+            "description": "테10",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T06:27:19.635Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "link",
+            "value": "ㄴㅇㄹㅇㄴㄹ",
+            "note": "ㄴㄹㅇㄴㄹㄴㅇ",
+            "submittedAt": "2026-06-15T06:27:19.635Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:27:23.718Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504401452_an94ig",
+              "title": "테10",
+              "description": "테10",
+              "source": "random"
+            },
+            "successCount": 6
+          }
+        },
+        {
+          "at": "2026-06-15T06:27:28.852Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504392803_4g6pf0",
+            "title": "테9",
+            "description": "테9",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T06:28:10.955Z",
+          "event": "teamfinding_submitted",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781504890954_h9x7k8.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 3.06.17.png",
+            "note": "",
+            "submittedAt": "2026-06-15T06:28:10.955Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:28:20.799Z",
+          "event": "teamfinding_approved",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781504890954_h9x7k8.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 3.06.17.png",
+            "note": "",
+            "submittedAt": "2026-06-15T06:28:10.955Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:28:34.052Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "link",
+            "value": "ㅇㅇㅇ",
+            "note": "ㅇㅇㅇ",
+            "submittedAt": "2026-06-15T06:28:34.052Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:28:45.815Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504392803_4g6pf0",
+              "title": "테9",
+              "description": "테9",
+              "source": "random"
+            },
+            "successCount": 7
+          }
+        },
+        {
+          "at": "2026-06-15T06:29:14.569Z",
+          "event": "teamfinding_reset",
+          "detail": {}
+        },
+        {
+          "at": "2026-06-15T06:30:29.658Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504375754_3joh7v",
+            "title": "테스트6",
+            "description": "테스트6",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T06:31:12.743Z",
+          "event": "teamfinding_submitted",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781505072739_zivqpg.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 3.06.17.png",
+            "note": "",
+            "submittedAt": "2026-06-15T06:31:12.743Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:31:18.034Z",
+          "event": "teamfinding_approved",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781505072739_zivqpg.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 3.06.17.png",
+            "note": "",
+            "submittedAt": "2026-06-15T06:31:12.743Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:31:51.074Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "file",
+            "files": [
+              {
+                "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781505111072_2psfch.png",
+                "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 2.51.13.png"
+              },
+              {
+                "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781505111072_kxmbvu.png",
+                "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 3.06.17.png"
+              }
+            ],
+            "link": null,
+            "note": "",
+            "submittedAt": "2026-06-15T06:31:51.074Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:32:04.117Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504375754_3joh7v",
+              "title": "테스트6",
+              "description": "테스트6",
+              "source": "random"
+            },
+            "successCount": 8
+          }
+        },
+        {
+          "at": "2026-06-15T06:42:04.944Z",
+          "event": "progress_reset",
+          "detail": {}
+        },
+        {
+          "at": "2026-06-15T06:42:56.082Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504380270_lz8y0g",
+            "title": "테7",
+            "description": "테7",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T06:43:14.327Z",
+          "event": "progress_reset",
+          "detail": {}
+        },
+        {
+          "at": "2026-06-15T06:43:19.315Z",
+          "event": "teamfinding_reset",
+          "detail": {}
+        },
+        {
+          "at": "2026-06-15T06:43:28.211Z",
+          "event": "teamfinding_submitted",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781505808206_eedqt2.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 2.26.05.png",
+            "note": "",
+            "submittedAt": "2026-06-15T06:43:28.211Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:43:33.748Z",
+          "event": "teamfinding_approved",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781505808206_eedqt2.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 2.26.05.png",
+            "note": "",
+            "submittedAt": "2026-06-15T06:43:28.211Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:43:40.198Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504386118_twqgcv",
+            "title": "테8",
+            "description": "테8",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T06:43:49.663Z",
+          "event": "mission_redrawn",
+          "detail": {
+            "id": "m_1781504401452_an94ig",
+            "title": "테10",
+            "description": "테10",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T06:50:06.921Z",
+          "event": "progress_reset",
+          "detail": {}
+        },
+        {
+          "at": "2026-06-15T06:50:09.521Z",
+          "event": "teamfinding_reset",
+          "detail": {}
+        },
+        {
+          "at": "2026-06-15T06:50:44.267Z",
+          "event": "teamfinding_submitted",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781506244265_8sjm38.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 3.06.17.png",
+            "note": "",
+            "submittedAt": "2026-06-15T06:50:44.267Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:50:51.865Z",
+          "event": "teamfinding_approved",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781506244265_8sjm38.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 3.06.17.png",
+            "note": "",
+            "submittedAt": "2026-06-15T06:50:44.267Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:50:59.814Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504375754_3joh7v",
+            "title": "테스트6",
+            "description": "테스트6",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T06:51:14.834Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "file",
+            "files": [
+              {
+                "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781506274833_dwdrg3.png",
+                "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 2.51.13.png"
+              }
+            ],
+            "link": null,
+            "note": "",
+            "submittedAt": "2026-06-15T06:51:14.834Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:51:20.946Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504375754_3joh7v",
+              "title": "테스트6",
+              "description": "테스트6",
+              "source": "random"
+            },
+            "successCount": 1
+          }
+        },
+        {
+          "at": "2026-06-15T06:51:36.447Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504203603_clo48q",
+            "title": "맛있는 점심식사!",
+            "description": "첫번째 미션은 다들 클리어했나요?! \n이제 점심드실 시간이에요! 자유롭게 식사 하시고\n영수증 음식사진, 영수증 사진 찍어서 올려주세요!\n식사비 한도은 인당 30,000원 입니다!(커피 포함)",
+            "source": "lunch"
+          }
+        },
+        {
+          "at": "2026-06-15T06:53:11.416Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "file",
+            "files": [
+              {
+                "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781506391415_g6qxnf.png",
+                "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 2.20.12.png"
+              }
+            ],
+            "link": null,
+            "note": "",
+            "submittedAt": "2026-06-15T06:53:11.416Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:53:20.079Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504203603_clo48q",
+              "title": "맛있는 점심식사!",
+              "description": "첫번째 미션은 다들 클리어했나요?! \n이제 점심드실 시간이에요! 자유롭게 식사 하시고\n영수증 음식사진, 영수증 사진 찍어서 올려주세요!\n식사비 한도은 인당 30,000원 입니다!(커피 포함)",
+              "source": "lunch"
+            },
+            "successCount": 2
+          }
+        },
+        {
+          "at": "2026-06-15T06:53:31.198Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504392803_4g6pf0",
+            "title": "테9",
+            "description": "테9",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T06:53:48.716Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "note",
+            "files": [],
+            "link": null,
+            "note": "ㄴㄹㅇㄴㄹㅇ",
+            "submittedAt": "2026-06-15T06:53:48.716Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:53:57.429Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504392803_4g6pf0",
+              "title": "테9",
+              "description": "테9",
+              "source": "random"
+            },
+            "successCount": 3
+          }
+        },
+        {
+          "at": "2026-06-15T06:54:09.215Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504310569_2gvlr9",
+            "title": "테스트1",
+            "description": "테스트1",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T06:54:26.130Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "note",
+            "files": [],
+            "link": null,
+            "note": "ㅇㄴㄹㅇㄴㄹㅇㄴ",
+            "submittedAt": "2026-06-15T06:54:26.130Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:54:38.797Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504310569_2gvlr9",
+              "title": "테스트1",
+              "description": "테스트1",
+              "source": "random"
+            },
+            "successCount": 4
+          }
+        },
+        {
+          "at": "2026-06-15T06:54:52.063Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504353370_5e8pf2",
+            "title": "테스트3",
+            "description": "테스트3\n테스트3\n테스트3\n테스트3\n테스트3\n테스트3\n",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T06:55:04.295Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "note",
+            "files": [],
+            "link": null,
+            "note": "ㄴㄹㅇㄴㄹㅇㄴㄹㅇㄴ",
+            "submittedAt": "2026-06-15T06:55:04.295Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:55:11.696Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504353370_5e8pf2",
+              "title": "테스트3",
+              "description": "테스트3\n테스트3\n테스트3\n테스트3\n테스트3\n테스트3\n",
+              "source": "random"
+            },
+            "successCount": 5
+          }
+        },
+        {
+          "at": "2026-06-15T07:09:40.486Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504359336_f8h1j3",
+            "title": "테스트4",
+            "description": "테스4",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T07:09:51.157Z",
+          "event": "mission_redrawn",
+          "detail": {
+            "id": "m_1781504386118_twqgcv",
+            "title": "테8",
+            "description": "테8",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T07:35:09.603Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "note",
+            "files": [],
+            "link": null,
+            "note": "ㄷㄹㄷㄴㅇㄹ",
+            "submittedAt": "2026-06-15T07:35:09.603Z"
+          }
+        },
+        {
+          "at": "2026-06-15T07:35:16.549Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504386118_twqgcv",
+              "title": "테8",
+              "description": "테8",
+              "source": "random"
+            },
+            "successCount": 6
+          }
+        },
+        {
+          "at": "2026-06-15T07:36:16.018Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504359336_f8h1j3",
+            "title": "테스트4",
+            "description": "테스4",
+            "source": "random"
+          }
+        }
+      ]
+    },
+    "2조": {
+      "teamFinding": {
+        "status": "approved",
+        "submission": {
+          "type": "file",
+          "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781506238804_qlkwjt.png",
+          "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 2.51.13.png",
+          "note": "",
+          "submittedAt": "2026-06-15T06:50:38.808Z"
+        }
+      },
+      "assignedMissionIds": [
+        "m_1781504375754_3joh7v",
+        "m_1781504144988_hnu5u4",
+        "m_1781504392803_4g6pf0",
+        "m_1781504401452_an94ig",
+        "m_1781504386118_twqgcv"
+      ],
+      "redrawUsed": false,
+      "currentMission": null,
+      "missionStatus": "none",
+      "submission": null,
+      "successCount": 5,
+      "hintsCollected": [
+        {
+          "id": "h_1781504444001_da9wlj",
+          "content": "13",
+          "type": "random",
+          "receivedAt": "2026-06-15T06:51:24.347Z"
+        },
+        {
+          "id": "h_1781504452285_bm1gfq",
+          "content": "16",
+          "type": "random",
+          "receivedAt": "2026-06-15T06:53:23.161Z"
+        },
+        {
+          "id": "h_1781504435167_ymlyvp",
+          "content": "9",
+          "type": "random",
+          "receivedAt": "2026-06-15T06:54:01.463Z"
+        },
+        {
+          "id": "h_1781504450086_dn3rn9",
+          "content": "15",
+          "type": "random",
+          "receivedAt": "2026-06-15T06:54:41.298Z"
+        },
+        {
+          "id": "h_1781504447835_tq1es5",
+          "content": "14",
+          "type": "random",
+          "receivedAt": "2026-06-15T06:55:14.080Z"
+        },
+        {
+          "id": "h_1781504466636_xe690x",
+          "content": "흰 17 그냥 거의 정답",
+          "type": "auto",
+          "receivedAt": "2026-06-15T06:55:14.080Z"
+        }
+      ],
+      "autoHintsSent": [
+        "r_1781505739130_j8aeex"
+      ],
+      "finished": false,
+      "history": [
+        {
+          "at": "2026-06-15T06:50:38.808Z",
+          "event": "teamfinding_submitted",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781506238804_qlkwjt.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 2.51.13.png",
+            "note": "",
+            "submittedAt": "2026-06-15T06:50:38.808Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:50:53.346Z",
+          "event": "teamfinding_approved",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781506238804_qlkwjt.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 2.51.13.png",
+            "note": "",
+            "submittedAt": "2026-06-15T06:50:38.808Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:51:02.663Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504375754_3joh7v",
+            "title": "테스트6",
+            "description": "테스트6",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T06:51:08.682Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "file",
+            "files": [
+              {
+                "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781506268680_y9j2o6.png",
+                "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 3.06.17.png"
+              }
+            ],
+            "link": null,
+            "note": "",
+            "submittedAt": "2026-06-15T06:51:08.682Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:51:24.347Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504375754_3joh7v",
+              "title": "테스트6",
+              "description": "테스트6",
+              "source": "random"
+            },
+            "successCount": 1
+          }
+        },
+        {
+          "at": "2026-06-15T06:51:31.599Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504144988_hnu5u4",
+            "title": "맛나는 점심식사!",
+            "description": "첫번째 미션은 다들 클리어했나요?! 이제 점심드실 시간이에요! 자유롭게 식사 하시고영수증 음식사진, 영수증 사진 찍어서 올려주세요!식사비 한도은 인당 15,000원 입니다!(후식 포함)",
+            "source": "lunch"
+          }
+        },
+        {
+          "at": "2026-06-15T06:53:04.917Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "file",
+            "files": [
+              {
+                "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781506384916_n3ger9.png",
+                "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 2.51.13.png"
+              }
+            ],
+            "link": null,
+            "note": "",
+            "submittedAt": "2026-06-15T06:53:04.917Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:53:23.161Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504144988_hnu5u4",
+              "title": "맛나는 점심식사!",
+              "description": "첫번째 미션은 다들 클리어했나요?! 이제 점심드실 시간이에요! 자유롭게 식사 하시고영수증 음식사진, 영수증 사진 찍어서 올려주세요!식사비 한도은 인당 15,000원 입니다!(후식 포함)",
+              "source": "lunch"
+            },
+            "successCount": 2
+          }
+        },
+        {
+          "at": "2026-06-15T06:53:33.897Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504392803_4g6pf0",
+            "title": "테9",
+            "description": "테9",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T06:53:51.298Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "file",
+            "files": [
+              {
+                "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781506431297_c3jfwe.png",
+                "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 2.20.12.png"
+              }
+            ],
+            "link": null,
+            "note": "",
+            "submittedAt": "2026-06-15T06:53:51.298Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:54:01.463Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504392803_4g6pf0",
+              "title": "테9",
+              "description": "테9",
+              "source": "random"
+            },
+            "successCount": 3
+          }
+        },
+        {
+          "at": "2026-06-15T06:54:18.362Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504401452_an94ig",
+            "title": "테10",
+            "description": "테10",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T06:54:29.664Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "note",
+            "files": [],
+            "link": null,
+            "note": "ㄴㅇㄹㅇㄴㄹㅇㄴ",
+            "submittedAt": "2026-06-15T06:54:29.664Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:54:41.298Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504401452_an94ig",
+              "title": "테10",
+              "description": "테10",
+              "source": "random"
+            },
+            "successCount": 4
+          }
+        },
+        {
+          "at": "2026-06-15T06:54:47.832Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504386118_twqgcv",
+            "title": "테8",
+            "description": "테8",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T06:55:02.147Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "note",
+            "files": [],
+            "link": null,
+            "note": "ㄴㄹㅇㄴㄹㅇㄴㄹㅇㄴ",
+            "submittedAt": "2026-06-15T06:55:02.147Z"
+          }
+        },
+        {
+          "at": "2026-06-15T06:55:14.080Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504386118_twqgcv",
+              "title": "테8",
+              "description": "테8",
+              "source": "random"
+            },
+            "successCount": 5
+          }
+        }
+      ]
+    },
+    "3조": {
+      "teamFinding": {
+        "status": "approved",
+        "submission": {
+          "type": "file",
+          "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781507115071_sdun5r.png",
+          "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 2.51.13.png",
+          "note": "",
+          "submittedAt": "2026-06-15T07:05:15.076Z"
+        }
+      },
+      "assignedMissionIds": [
+        "m_1781504401452_an94ig",
+        "m_1781504107404_n3foar",
+        "m_1781504386118_twqgcv",
+        "m_1781504392803_4g6pf0",
+        "m_1781504380270_lz8y0g",
+        "m_1781504366486_lfpge2"
+      ],
+      "redrawUsed": true,
+      "currentMission": {
+        "id": "m_1781504366486_lfpge2",
+        "title": "테스트5",
+        "description": "테스트5",
+        "source": "random"
+      },
+      "missionStatus": "assigned",
+      "submission": null,
+      "successCount": 5,
+      "hintsCollected": [
+        {
+          "id": "h_1781504416818_b3x7x2",
+          "content": "힌3",
+          "type": "random",
+          "receivedAt": "2026-06-15T07:05:58.903Z"
+        },
+        {
+          "id": "h_1781504419568_pyh58f",
+          "content": "힌4",
+          "image": null,
+          "type": "random",
+          "receivedAt": "2026-06-15T07:37:28.998Z"
+        },
+        {
+          "id": "h_1781504447835_tq1es5",
+          "content": "14",
+          "image": null,
+          "type": "random",
+          "receivedAt": "2026-06-15T07:37:50.147Z"
+        },
+        {
+          "id": "h_1781504433351_klq18k",
+          "content": "8",
+          "image": null,
+          "type": "random",
+          "receivedAt": "2026-06-15T07:38:13.365Z"
+        },
+        {
+          "id": "h_1781504410788_dmfniu",
+          "content": "힌1",
+          "image": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781508879253_736lhg.png",
+          "type": "random",
+          "receivedAt": "2026-06-15T07:38:38.232Z"
+        },
+        {
+          "id": "h_1781504466636_xe690x",
+          "content": "흰 17 그냥 거의 정답",
+          "image": null,
+          "type": "auto",
+          "receivedAt": "2026-06-15T07:38:38.232Z"
+        }
+      ],
+      "autoHintsSent": [
+        "r_1781505739130_j8aeex"
+      ],
+      "finished": false,
+      "history": [
+        {
+          "at": "2026-06-15T07:05:15.076Z",
+          "event": "teamfinding_submitted",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781507115071_sdun5r.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 2.51.13.png",
+            "note": "",
+            "submittedAt": "2026-06-15T07:05:15.076Z"
+          }
+        },
+        {
+          "at": "2026-06-15T07:05:32.189Z",
+          "event": "teamfinding_approved",
+          "detail": {
+            "type": "file",
+            "value": "https://qzahgprzisunuievkmka.supabase.co/storage/v1/object/public/uploads/f_1781507115071_sdun5r.png",
+            "originalName": "ì¤í¬ë¦°ì· 2026-06-15 ì¤í 2.51.13.png",
+            "note": "",
+            "submittedAt": "2026-06-15T07:05:15.076Z"
+          }
+        },
+        {
+          "at": "2026-06-15T07:05:37.885Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504401452_an94ig",
+            "title": "테10",
+            "description": "테10",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T07:05:46.688Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "note",
+            "files": [],
+            "link": null,
+            "note": "ㄴㄹㅇㄴㄹㅇㄴ",
+            "submittedAt": "2026-06-15T07:05:46.688Z"
+          }
+        },
+        {
+          "at": "2026-06-15T07:05:58.903Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504401452_an94ig",
+              "title": "테10",
+              "description": "테10",
+              "source": "random"
+            },
+            "successCount": 1
+          }
+        },
+        {
+          "at": "2026-06-15T07:06:08.834Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504203603_clo48q",
+            "title": "맛있는 점심식사!",
+            "description": "첫번째 미션은 다들 클리어했나요?! \n이제 점심드실 시간이에요! 자유롭게 식사 하시고\n영수증 음식사진, 영수증 사진 찍어서 올려주세요!\n식사비 한도은 인당 30,000원 입니다!(커피 포함)",
+            "source": "lunch"
+          }
+        },
+        {
+          "at": "2026-06-15T07:06:13.886Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "note",
+            "files": [],
+            "link": null,
+            "note": "ㄴ런아ㅣㅁ;러나임;런망;ㅣㄹㅁㅇㄴ",
+            "submittedAt": "2026-06-15T07:06:13.886Z"
+          }
+        },
+        {
+          "at": "2026-06-15T07:06:31.945Z",
+          "event": "mission_rejected",
+          "detail": {
+            "mission": {
+              "id": "m_1781504203603_clo48q",
+              "title": "맛있는 점심식사!",
+              "description": "첫번째 미션은 다들 클리어했나요?! \n이제 점심드실 시간이에요! 자유롭게 식사 하시고\n영수증 음식사진, 영수증 사진 찍어서 올려주세요!\n식사비 한도은 인당 30,000원 입니다!(커피 포함)",
+              "source": "lunch"
+            },
+            "note": "저리가"
+          }
+        },
+        {
+          "at": "2026-06-15T07:36:25.701Z",
+          "event": "mission_redrawn",
+          "detail": {
+            "id": "m_1781504107404_n3foar",
+            "title": "맛나는 점심식사!",
+            "description": "첫번째 미션은 다들 클리어했나요?! 이제 점심드실 시간이에요! 자유롭게 식사 하시고영수증 음식사진, 영수증 사진 찍어서 올려주세요!식사비 한도은 인당 5,000원 입니다!(커피 포함)",
+            "source": "lunch"
+          }
+        },
+        {
+          "at": "2026-06-15T07:37:19.573Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "note",
+            "files": [],
+            "link": null,
+            "note": "ㅇㄴㄹㅇㄴ",
+            "submittedAt": "2026-06-15T07:37:19.573Z"
+          }
+        },
+        {
+          "at": "2026-06-15T07:37:28.998Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504107404_n3foar",
+              "title": "맛나는 점심식사!",
+              "description": "첫번째 미션은 다들 클리어했나요?! 이제 점심드실 시간이에요! 자유롭게 식사 하시고영수증 음식사진, 영수증 사진 찍어서 올려주세요!식사비 한도은 인당 5,000원 입니다!(커피 포함)",
+              "source": "lunch"
+            },
+            "successCount": 2
+          }
+        },
+        {
+          "at": "2026-06-15T07:37:36.648Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504386118_twqgcv",
+            "title": "테8",
+            "description": "테8",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T07:37:40.367Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "note",
+            "files": [],
+            "link": null,
+            "note": "ㄴㅇㄹㅇㄴㄹㅇㄴㄹㅇㄴ",
+            "submittedAt": "2026-06-15T07:37:40.367Z"
+          }
+        },
+        {
+          "at": "2026-06-15T07:37:50.147Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504386118_twqgcv",
+              "title": "테8",
+              "description": "테8",
+              "source": "random"
+            },
+            "successCount": 3
+          }
+        },
+        {
+          "at": "2026-06-15T07:37:56.949Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504392803_4g6pf0",
+            "title": "테9",
+            "description": "테9",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T07:37:59.249Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "note",
+            "files": [],
+            "link": null,
+            "note": "ㅇㄴㄹㅇㄴㄹ",
+            "submittedAt": "2026-06-15T07:37:59.249Z"
+          }
+        },
+        {
+          "at": "2026-06-15T07:38:13.365Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504392803_4g6pf0",
+              "title": "테9",
+              "description": "테9",
+              "source": "random"
+            },
+            "successCount": 4
+          }
+        },
+        {
+          "at": "2026-06-15T07:38:23.767Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504380270_lz8y0g",
+            "title": "테7",
+            "description": "테7",
+            "source": "random"
+          }
+        },
+        {
+          "at": "2026-06-15T07:38:26.149Z",
+          "event": "mission_submitted",
+          "detail": {
+            "type": "note",
+            "files": [],
+            "link": null,
+            "note": "ㄴㅇㄹㅇㄴㄹ",
+            "submittedAt": "2026-06-15T07:38:26.149Z"
+          }
+        },
+        {
+          "at": "2026-06-15T07:38:38.232Z",
+          "event": "mission_approved",
+          "detail": {
+            "mission": {
+              "id": "m_1781504380270_lz8y0g",
+              "title": "테7",
+              "description": "테7",
+              "source": "random"
+            },
+            "successCount": 5
+          }
+        },
+        {
+          "at": "2026-06-15T07:38:51.583Z",
+          "event": "mission_assigned",
+          "detail": {
+            "id": "m_1781504366486_lfpge2",
+            "title": "테스트5",
+            "description": "테스트5",
+            "source": "random"
+          }
+        }
+      ]
+    },
+    "4조": {
+      "teamFinding": {
+        "status": "none",
+        "submission": null
+      },
+      "assignedMissionIds": [],
+      "redrawUsed": false,
+      "currentMission": null,
+      "missionStatus": "none",
+      "submission": null,
+      "successCount": 0,
+      "hintsCollected": [],
+      "autoHintsSent": [],
+      "finished": false,
+      "history": []
+    },
+    "5조": {
+      "teamFinding": {
+        "status": "none",
+        "submission": null
+      },
+      "assignedMissionIds": [],
+      "redrawUsed": false,
+      "currentMission": null,
+      "missionStatus": "none",
+      "submission": null,
+      "successCount": 0,
+      "hintsCollected": [],
+      "autoHintsSent": [],
+      "finished": false,
+      "history": []
+    }
+  },
+  "hintLog": [
+    {
+      "team": "1조",
+      "hintId": "h_1781504435167_ymlyvp",
+      "type": "random",
+      "sentAt": "2026-06-15T06:22:04.186Z"
+    },
+    {
+      "team": "1조",
+      "hintId": "h_1781504466636_xe690x",
+      "type": "random",
+      "sentAt": "2026-06-15T06:22:49.353Z"
+    },
+    {
+      "team": "1조",
+      "hintId": "h_1781504447835_tq1es5",
+      "type": "random",
+      "sentAt": "2026-06-15T06:25:37.514Z"
+    },
+    {
+      "team": "1조",
+      "hintId": "h_1781504410788_dmfniu",
+      "type": "random",
+      "sentAt": "2026-06-15T06:26:36.700Z"
+    },
+    {
+      "team": "1조",
+      "hintId": "h_1781504430720_0l3nyg",
+      "type": "random",
+      "sentAt": "2026-06-15T06:27:02.238Z"
+    },
+    {
+      "team": "1조",
+      "hintId": "h_1781504452285_bm1gfq",
+      "type": "random",
+      "sentAt": "2026-06-15T06:27:23.718Z"
+    },
+    {
+      "team": "1조",
+      "hintId": "h_1781504414483_m5amyz",
+      "type": "random",
+      "sentAt": "2026-06-15T06:28:45.815Z"
+    },
+    {
+      "team": "1조",
+      "hintId": "h_1781504444001_da9wlj",
+      "type": "random",
+      "sentAt": "2026-06-15T06:32:04.117Z"
+    },
+    {
+      "team": "1조",
+      "hintId": "h_1781504414483_m5amyz",
+      "type": "random",
+      "sentAt": "2026-06-15T06:51:20.946Z"
+    },
+    {
+      "team": "2조",
+      "hintId": "h_1781504444001_da9wlj",
+      "type": "random",
+      "sentAt": "2026-06-15T06:51:24.347Z"
+    },
+    {
+      "team": "1조",
+      "hintId": "h_1781504433351_klq18k",
+      "type": "random",
+      "sentAt": "2026-06-15T06:53:20.079Z"
+    },
+    {
+      "team": "2조",
+      "hintId": "h_1781504452285_bm1gfq",
+      "type": "random",
+      "sentAt": "2026-06-15T06:53:23.161Z"
+    },
+    {
+      "team": "1조",
+      "hintId": "h_1781504440051_zy4zyr",
+      "type": "random",
+      "sentAt": "2026-06-15T06:53:57.429Z"
+    },
+    {
+      "team": "2조",
+      "hintId": "h_1781504435167_ymlyvp",
+      "type": "random",
+      "sentAt": "2026-06-15T06:54:01.463Z"
+    },
+    {
+      "team": "1조",
+      "hintId": "h_1781504423085_6luffm",
+      "type": "random",
+      "sentAt": "2026-06-15T06:54:38.797Z"
+    },
+    {
+      "team": "2조",
+      "hintId": "h_1781504450086_dn3rn9",
+      "type": "random",
+      "sentAt": "2026-06-15T06:54:41.298Z"
+    },
+    {
+      "team": "1조",
+      "hintId": "h_1781504426101_n9sw2v",
+      "type": "random",
+      "sentAt": "2026-06-15T06:55:11.696Z"
+    },
+    {
+      "team": "1조",
+      "hintId": "h_1781504466636_xe690x",
+      "type": "auto",
+      "sentAt": "2026-06-15T06:55:11.696Z"
+    },
+    {
+      "team": "2조",
+      "hintId": "h_1781504447835_tq1es5",
+      "type": "random",
+      "sentAt": "2026-06-15T06:55:14.080Z"
+    },
+    {
+      "team": "2조",
+      "hintId": "h_1781504466636_xe690x",
+      "type": "auto",
+      "sentAt": "2026-06-15T06:55:14.080Z"
+    },
+    {
+      "team": "3조",
+      "hintId": "h_1781504416818_b3x7x2",
+      "type": "random",
+      "sentAt": "2026-06-15T07:05:58.903Z"
+    },
+    {
+      "team": "1조",
+      "hintId": "h_1781504444001_da9wlj",
+      "type": "random",
+      "sentAt": "2026-06-15T07:35:16.549Z"
+    },
+    {
+      "team": "3조",
+      "hintId": "h_1781504419568_pyh58f",
+      "type": "random",
+      "sentAt": "2026-06-15T07:37:28.998Z"
+    },
+    {
+      "team": "3조",
+      "hintId": "h_1781504447835_tq1es5",
+      "type": "random",
+      "sentAt": "2026-06-15T07:37:50.147Z"
+    },
+    {
+      "team": "3조",
+      "hintId": "h_1781504433351_klq18k",
+      "type": "random",
+      "sentAt": "2026-06-15T07:38:13.365Z"
+    },
+    {
+      "team": "3조",
+      "hintId": "h_1781504410788_dmfniu",
+      "type": "random",
+      "sentAt": "2026-06-15T07:38:38.232Z"
+    },
+    {
+      "team": "3조",
+      "hintId": "h_1781504466636_xe690x",
+      "type": "auto",
+      "sentAt": "2026-06-15T07:38:38.232Z"
+    }
+  ]
+}

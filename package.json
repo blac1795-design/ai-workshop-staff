@@ -1,0 +1,15 @@
+{
+  "name": "ai-workshop-staff",
+  "version": "1.0.0",
+  "description": "AI 워크샵 스태프 플랫폼 - 관리자/참여자(조장) 웹 앱",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1"
+  }
+}
