@@ -463,6 +463,8 @@ app.post('/api/admin/teams/:team/progress/reset', requireAdmin, async (req, res)
   state.successCount = 0;
   state.hintsCollected = [];
   state.autoHintsSent = [];
+  state.destinationGuesses = [];
+  state.destinationCorrect = false;
   state.finished = false;
   logHistory(state, 'progress_reset', {});
 
