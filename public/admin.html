@@ -130,10 +130,11 @@
           </div>
           <textarea id="missionDesc" placeholder="미션 상세 설명"></textarea>
           <div class="row" style="margin-top:8px;">
+            <input type="file" id="missionImageFile" accept="image/*" style="flex:2;" />
             <button class="btn" onclick="addMission('missionPool')">추가</button>
           </div>
           <table>
-            <thead><tr><th>제목</th><th>설명</th><th></th></tr></thead>
+            <thead><tr><th>제목</th><th>설명</th><th>이미지</th><th></th></tr></thead>
             <tbody id="missionPoolBody"></tbody>
           </table>
         </div>
@@ -145,10 +146,11 @@
           </div>
           <textarea id="lunchDesc" placeholder="미션 상세 설명"></textarea>
           <div class="row" style="margin-top:8px;">
+            <input type="file" id="lunchImageFile" accept="image/*" style="flex:2;" />
             <button class="btn" onclick="addMission('lunchMissionPool')">추가</button>
           </div>
           <table>
-            <thead><tr><th>제목</th><th>설명</th><th></th></tr></thead>
+            <thead><tr><th>제목</th><th>설명</th><th>이미지</th><th></th></tr></thead>
             <tbody id="lunchPoolBody"></tbody>
           </table>
         </div>
@@ -348,9 +350,12 @@ function renderMissionTable(bodyId, list, poolKey){
   body.innerHTML='';
   const endpoint = poolKey==='missionPool' ? '/api/admin/missions' : '/api/admin/lunch-missions';
   list.forEach(m=>{
+    const imgHtml = m.image ? `<img src="${m.image}" style="max-width:60px;max-height:60px;border-radius:6px;display:block;margin-bottom:4px;" />` : '';
+    const removeBtn = m.image ? `<button class="btn danger" style="font-size:11px;padding:4px 8px;margin-top:4px;" onclick="removeMissionImage('${endpoint}','${m.id}')">이미지 제거</button>` : '';
     body.innerHTML += `<tr>
-      <td style="width:30%;"><input value="${escapeHtml(m.title)}" onchange="updateMission('${endpoint}','${m.id}',{title:this.value})" style="width:100%;" /></td>
-      <td><textarea rows="3" style="width:100%;min-width:200px;" onchange="updateMission('${endpoint}','${m.id}',{description:this.value})">${escapeHtml(m.description||'')}</textarea></td>
+      <td style="width:25%;"><input value="${escapeHtml(m.title)}" onchange="updateMission('${endpoint}','${m.id}',{title:this.value})" style="width:100%;" /></td>
+      <td><textarea rows="3" style="width:100%;min-width:160px;" onchange="updateMission('${endpoint}','${m.id}',{description:this.value})">${escapeHtml(m.description||'')}</textarea></td>
+      <td style="min-width:120px;">${imgHtml}<input type="file" accept="image/*" style="font-size:11px;max-width:130px;" onchange="uploadMissionImage('${endpoint}','${m.id}',this)" />${removeBtn}</td>
       <td><button class="btn danger" onclick="deleteMission('${endpoint}','${m.id}')">삭제</button></td>
     </tr>`;
   });
@@ -359,15 +364,35 @@ async function addMission(poolKey){
   const isLunch = poolKey==='lunchMissionPool';
   const titleEl = document.getElementById(isLunch?'lunchTitle':'missionTitle');
   const descEl = document.getElementById(isLunch?'lunchDesc':'missionDesc');
+  const fileEl = document.getElementById(isLunch?'lunchImageFile':'missionImageFile');
   const title = titleEl.value.trim();
   if(!title) return;
   const endpoint = isLunch ? '/api/admin/lunch-missions' : '/api/admin/missions';
-  await api(endpoint, {method:'POST', body:{title, description: descEl.value}});
-  titleEl.value=''; descEl.value='';
+  let image = null;
+  if(fileEl.files.length){
+    const fd = new FormData();
+    fd.append('image', fileEl.files[0]);
+    const up = await api(endpoint+'/upload', {method:'POST', body:fd});
+    image = up.url;
+  }
+  await api(endpoint, {method:'POST', body:{title, description: descEl.value, image}});
+  titleEl.value=''; descEl.value=''; fileEl.value='';
   loadMissions();
 }
 async function updateMission(endpoint, id, patch){
   await api(endpoint+'/'+id, {method:'PUT', body:patch});
+}
+async function uploadMissionImage(endpoint, id, inputEl){
+  if(!inputEl.files.length) return;
+  const fd = new FormData();
+  fd.append('image', inputEl.files[0]);
+  const up = await api(endpoint+'/upload', {method:'POST', body:fd});
+  await api(endpoint+'/'+id, {method:'PUT', body:{image: up.url}});
+  loadMissions();
+}
+async function removeMissionImage(endpoint, id){
+  await api(endpoint+'/'+id, {method:'PUT', body:{image: null}});
+  loadMissions();
 }
 async function deleteMission(endpoint, id){
   if(!confirm('삭제하시겠습니까?')) return;
@@ -534,7 +559,7 @@ async function loadProgress(){
         ${tfActionHtml ? `<div style="margin-top:8px;">${tfActionHtml}</div>` : ''}
       </div>
       <div class="small" style="margin-top:6px;">진행 미션 수: ${p.missionCount} · 성공 횟수: ${p.successCount} · 재추첨: ${p.redrawUsed?'사용함':'미사용'}</div>
-      ${mission ? `<div style="margin-top:8px;"><strong>현재 미션</strong> (${mission.source==='lunch'?'점심':'랜덤'}): ${escapeHtml(mission.title)}<div class="small">${escapeHtml(mission.description||'')}</div></div>` : '<div class="small" style="margin-top:8px;">현재 배정된 미션 없음</div>'}
+      ${mission ? `<div style="margin-top:8px;"><strong>현재 미션</strong> (${mission.source==='lunch'?'점심':'랜덤'}): ${escapeHtml(mission.title)}<div class="small">${escapeHtml(mission.description||'')}</div>${mission.image?`<img src="${mission.image}" style="max-width:120px;max-height:120px;border-radius:8px;margin-top:6px;" />`:''}` + `</div>` : '<div class="small" style="margin-top:8px;">현재 배정된 미션 없음</div>'}
       ${mediaHtml ? `<div style="margin-top:8px;">${mediaHtml}</div>` : ''}
       <div style="margin-top:8px;"><strong class="small">✅ 성공한 미션 목록</strong>${completedHtml}</div>
       <div style="margin-top:8px;"><strong class="small">수집한 힌트</strong><br/>${hintsHtml}</div>

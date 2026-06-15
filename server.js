@@ -204,10 +204,21 @@ app.post('/api/admin/participants/bulk-delete', requireAdmin, async (req, res) =
 function poolRoutes(poolKey, basePath) {
   app.get(basePath, requireAdmin, async (req, res) => res.json(req.db[poolKey]));
 
+  // image upload endpoint for this pool
+  app.post(`${basePath}/upload`, requireAdmin, upload.single('image'), async (req, res) => {
+    if (!req.file) return res.status(400).json({ error: '이미지 파일을 선택하세요' });
+    try {
+      const url = await uploadFile(req.file);
+      res.json({ url });
+    } catch (e) {
+      res.status(500).json({ error: '업로드 실패: ' + e.message });
+    }
+  });
+
   app.post(basePath, requireAdmin, async (req, res) => {
-    const { title, description } = req.body;
+    const { title, description, image } = req.body;
     if (!title || !title.trim()) return res.status(400).json({ error: '미션 제목을 입력하세요' });
-    const item = { id: newId('m'), title: title.trim(), description: description || '' };
+    const item = { id: newId('m'), title: title.trim(), description: description || '', image: image || null };
     req.db[poolKey].push(item);
     await save(req.db);
     res.json(item);
@@ -216,9 +227,10 @@ function poolRoutes(poolKey, basePath) {
   app.put(`${basePath}/:id`, requireAdmin, async (req, res) => {
     const item = req.db[poolKey].find((x) => x.id === req.params.id);
     if (!item) return res.status(404).json({ error: '미션을 찾을 수 없습니다' });
-    const { title, description } = req.body;
+    const { title, description, image } = req.body;
     if (title !== undefined) item.title = title.trim();
     if (description !== undefined) item.description = description;
+    if (image !== undefined) item.image = image;
     await save(req.db);
     res.json(item);
   });
