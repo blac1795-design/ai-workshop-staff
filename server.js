@@ -62,7 +62,9 @@ function summarizeState(state) {
     missionCount: state.assignedMissionIds.length,
     completedMissions: getCompletedMissions(state),
     finished: state.finished,
-    pendingRejection: (state.lastRejection && !state.lastRejection.acknowledged) ? state.lastRejection : null
+    pendingRejection: (state.lastRejection && !state.lastRejection.acknowledged) ? state.lastRejection : null,
+    destinationGuesses: state.destinationGuesses || [],
+    destinationCorrect: state.destinationCorrect || false
   };
 }
 
@@ -287,6 +289,27 @@ app.delete('/api/admin/hints/:id', requireAdmin, async (req, res) => {
 });
 
 // ---------------------------------------------------------------------------
+// destination answer (종착지 정답)
+// ---------------------------------------------------------------------------
+app.get('/api/admin/destination', requireAdmin, async (req, res) => {
+  res.json({ answer: req.db.config.destinationAnswer || null });
+});
+
+app.put('/api/admin/destination', requireAdmin, async (req, res) => {
+  const { answer } = req.body;
+  if (!answer || !answer.trim()) return res.status(400).json({ error: '정답을 입력하세요' });
+  req.db.config.destinationAnswer = answer.trim();
+  await save(req.db);
+  res.json({ answer: req.db.config.destinationAnswer });
+});
+
+app.delete('/api/admin/destination', requireAdmin, async (req, res) => {
+  req.db.config.destinationAnswer = null;
+  await save(req.db);
+  res.json({ ok: true });
+});
+
+// ---------------------------------------------------------------------------
 // auto hint rules
 // ---------------------------------------------------------------------------
 app.get('/api/admin/auto-hint-rules', requireAdmin, async (req, res) => res.json(req.db.config.autoHintRules));
@@ -442,6 +465,7 @@ app.post('/api/admin/teams/:team/teamfinding/reject', requireAdmin, async (req, 
     return res.status(400).json({ error: '승인 대기 중인 제출물이 없습니다' });
   }
   state.teamFinding.status = 'none';
+  state.teamFinding.rejectionNote = req.body.note || '';
   logHistory(state, 'teamfinding_rejected', { note: req.body.note || '' });
   await save(req.db);
   res.json({ ok: true });
@@ -653,6 +677,46 @@ app.post('/api/team/:team/mission/ack-rejection', async (req, res) => {
     await save(db);
   }
   res.json({ ok: true });
+});
+
+// destination guess (종착지 추측)
+app.post('/api/team/:team/destination/guess', async (req, res) => {
+  const team = decodeURIComponent(req.params.team);
+  const db = await load();
+  if (!db.teams.includes(team)) return res.status(404).json({ error: '존재하지 않는 조입니다' });
+  const state = ensureTeamState(db, team);
+
+  if (state.teamFinding.status !== 'approved') {
+    return res.status(400).json({ error: '조원 찾기 미션을 완료해야 합니다' });
+  }
+  if (state.destinationCorrect) {
+    return res.status(400).json({ error: '이미 정답을 맞췄습니다' });
+  }
+
+  const guessesUsed = (state.destinationGuesses || []).length;
+  const remaining = state.successCount - guessesUsed;
+  if (remaining <= 0) {
+    return res.status(400).json({ error: '남은 추측 기회가 없습니다. 미션을 더 성공하면 기회가 생깁니다.' });
+  }
+
+  const guess = (req.body.guess || '').trim();
+  if (!guess) return res.status(400).json({ error: '추측 내용을 입력하세요' });
+
+  const answer = (db.config.destinationAnswer || '').trim();
+  const correct = answer && guess.toLowerCase() === answer.toLowerCase();
+
+  if (!state.destinationGuesses) state.destinationGuesses = [];
+  state.destinationGuesses.push({ guess, correct, at: new Date().toISOString() });
+  if (correct) state.destinationCorrect = true;
+
+  logHistory(state, 'destination_guess', { guess, correct });
+  await save(db);
+
+  res.json({
+    correct,
+    remaining: state.successCount - state.destinationGuesses.length,
+    guessesUsed: state.destinationGuesses.length
+  });
 });
 
 // hints collected so far

@@ -46,6 +46,8 @@ function defaultTeamState() {
     successCount: 0,
     hintsCollected: [], // [{ id, content, type: 'random'|'auto', receivedAt }]
     autoHintsSent: [], // [ruleId]
+    destinationGuesses: [], // [{ guess, correct, at }]
+    destinationCorrect: false,
     finished: false,
     history: [] // [{ at, event, detail }]
   };
