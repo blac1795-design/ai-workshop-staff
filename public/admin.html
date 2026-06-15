@@ -161,14 +161,16 @@
     <div class="panel" id="panel-hints">
       <div class="card" style="margin-bottom:16px;border:2px solid var(--primary);">
         <h2>📍 종착지 정답 관리</h2>
-        <p class="small">조별로 종착지를 추측할 때 사용하는 정답입니다. 이름 또는 주소를 입력하세요 (대소문자 구분 없음).</p>
+        <p class="small">정답을 여러 개 등록할 수 있습니다. 참여자가 입력한 내용이 하나라도 일치하면 정답 처리됩니다 (대소문자 구분 없음).</p>
         <div class="row">
-          <input id="destAnswerInput" placeholder="종착지 이름 또는 주소" style="flex:3;" />
-          <button class="btn" onclick="saveDestination()">저장</button>
-          <button class="btn danger" onclick="deleteDestination()">삭제</button>
+          <input id="destAnswerInput" placeholder="정답 추가 (예: 오션뷰펜션, 제주시 연동 123)" style="flex:3;" />
+          <button class="btn" onclick="addDestination()">추가</button>
         </div>
         <div class="msg" id="destMsg"></div>
-        <div class="small" id="destCurrent" style="margin-top:6px;"></div>
+        <table style="margin-top:8px;">
+          <thead><tr><th>정답</th><th></th></tr></thead>
+          <tbody id="destAnswerBody"></tbody>
+        </table>
       </div>
       <div class="grid2">
         <div class="card">
@@ -267,32 +269,41 @@ async function initApp(){
 async function loadDestination(){
   try{
     const res = await api('/api/admin/destination');
-    const cur = document.getElementById('destCurrent');
-    const input = document.getElementById('destAnswerInput');
-    if(res.answer){
-      cur.textContent = `현재 설정된 정답: "${res.answer}"`;
-      input.value = res.answer;
-    }else{
-      cur.textContent = '(정답이 설정되지 않았습니다)';
-      input.value = '';
-    }
+    const body = document.getElementById('destAnswerBody');
+    body.innerHTML = '';
+    (res.answers || []).forEach(a=>{
+      body.innerHTML += `<tr>
+        <td><input value="${escapeHtml(a.answer)}" onchange="updateDestination('${a.id}',this.value)" style="width:100%;" /></td>
+        <td><button class="btn danger" onclick="deleteDestination('${a.id}')">삭제</button></td>
+      </tr>`;
+    });
   }catch(e){}
 }
-async function saveDestination(){
-  const answer = document.getElementById('destAnswerInput').value.trim();
+async function addDestination(){
+  const input = document.getElementById('destAnswerInput');
   const msg = document.getElementById('destMsg');
   msg.className='msg'; msg.textContent='';
+  const answer = input.value.trim();
   if(!answer){ msg.className='msg error'; msg.textContent='정답을 입력하세요'; return; }
   try{
-    await api('/api/admin/destination', {method:'PUT', body:{answer}});
-    msg.className='msg ok'; msg.textContent='저장되었습니다';
+    await api('/api/admin/destination', {method:'POST', body:{answer}});
+    input.value='';
+    msg.className='msg ok'; msg.textContent='추가되었습니다';
     loadDestination();
   }catch(e){ msg.className='msg error'; msg.textContent=e.message; }
 }
-async function deleteDestination(){
-  if(!confirm('정답을 삭제하시겠습니까? 참여자들이 추측할 수 없게 됩니다.')) return;
+async function updateDestination(id, answer){
   const msg = document.getElementById('destMsg');
-  await api('/api/admin/destination', {method:'DELETE'});
+  if(!answer.trim()){ msg.className='msg error'; msg.textContent='정답 내용을 입력하세요'; return; }
+  try{
+    await api('/api/admin/destination/'+id, {method:'PUT', body:{answer}});
+    msg.className='msg ok'; msg.textContent='수정되었습니다';
+  }catch(e){ msg.className='msg error'; msg.textContent=e.message; }
+}
+async function deleteDestination(id){
+  if(!confirm('이 정답을 삭제하시겠습니까?')) return;
+  const msg = document.getElementById('destMsg');
+  await api('/api/admin/destination/'+id, {method:'DELETE'});
   msg.className='msg ok'; msg.textContent='삭제되었습니다';
   loadDestination();
 }

@@ -289,22 +289,47 @@ app.delete('/api/admin/hints/:id', requireAdmin, async (req, res) => {
 });
 
 // ---------------------------------------------------------------------------
-// destination answer (종착지 정답)
+// destination answers (종착지 정답 복수)
 // ---------------------------------------------------------------------------
+function getDestAnswers(db) {
+  // 구버전(단일 문자열) 호환
+  if (!db.config.destinationAnswers) {
+    db.config.destinationAnswers = db.config.destinationAnswer
+      ? [{ id: newId('da'), answer: db.config.destinationAnswer }]
+      : [];
+    db.config.destinationAnswer = undefined;
+  }
+  return db.config.destinationAnswers;
+}
+
 app.get('/api/admin/destination', requireAdmin, async (req, res) => {
-  res.json({ answer: req.db.config.destinationAnswer || null });
+  res.json({ answers: getDestAnswers(req.db) });
 });
 
-app.put('/api/admin/destination', requireAdmin, async (req, res) => {
+app.post('/api/admin/destination', requireAdmin, async (req, res) => {
   const { answer } = req.body;
   if (!answer || !answer.trim()) return res.status(400).json({ error: '정답을 입력하세요' });
-  req.db.config.destinationAnswer = answer.trim();
+  const list = getDestAnswers(req.db);
+  const item = { id: newId('da'), answer: answer.trim() };
+  list.push(item);
   await save(req.db);
-  res.json({ answer: req.db.config.destinationAnswer });
+  res.json(item);
 });
 
-app.delete('/api/admin/destination', requireAdmin, async (req, res) => {
-  req.db.config.destinationAnswer = null;
+app.put('/api/admin/destination/:id', requireAdmin, async (req, res) => {
+  const list = getDestAnswers(req.db);
+  const item = list.find(x => x.id === req.params.id);
+  if (!item) return res.status(404).json({ error: '항목을 찾을 수 없습니다' });
+  const { answer } = req.body;
+  if (!answer || !answer.trim()) return res.status(400).json({ error: '정답을 입력하세요' });
+  item.answer = answer.trim();
+  await save(req.db);
+  res.json(item);
+});
+
+app.delete('/api/admin/destination/:id', requireAdmin, async (req, res) => {
+  const list = getDestAnswers(req.db);
+  req.db.config.destinationAnswers = list.filter(x => x.id !== req.params.id);
   await save(req.db);
   res.json({ ok: true });
 });
@@ -702,8 +727,8 @@ app.post('/api/team/:team/destination/guess', async (req, res) => {
   const guess = (req.body.guess || '').trim();
   if (!guess) return res.status(400).json({ error: '추측 내용을 입력하세요' });
 
-  const answer = (db.config.destinationAnswer || '').trim();
-  const correct = answer && guess.toLowerCase() === answer.toLowerCase();
+  const answers = getDestAnswers(db);
+  const correct = answers.length > 0 && answers.some(a => a.answer.toLowerCase() === guess.toLowerCase());
 
   if (!state.destinationGuesses) state.destinationGuesses = [];
   state.destinationGuesses.push({ guess, correct, at: new Date().toISOString() });
