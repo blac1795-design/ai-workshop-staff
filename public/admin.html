@@ -674,6 +674,10 @@ async function loadProgress(){
       ${mediaHtml ? `<div style="margin-top:8px;">${mediaHtml}</div>` : ''}
       <div style="margin-top:8px;"><strong class="small">✅ 성공한 미션 목록</strong>${completedHtml}</div>
       <div style="margin-top:8px;"><strong class="small">수집한 힌트</strong><br/>${hintsHtml}</div>
+      <div style="margin-top:8px;padding:10px 12px;border-radius:8px;background:${p.destinationCorrect?'#dcfce7':'#f1f5f9'};border:1px solid ${p.destinationCorrect?'#86efac':'#e2e8f0'};">
+        <strong class="small" style="color:${p.destinationCorrect?'#15803d':'#64748b'};">📍 종착지 추측 ${p.destinationCorrect?'✅ 정답 맞힘':'❌ 아직 미정답'}</strong>
+        ${(p.destinationGuesses||[]).length > 0 ? `<div style="margin-top:6px;">${(p.destinationGuesses||[]).map(g=>`<div class="small" style="margin-top:2px;color:${g.correct?'#15803d':'#991b1b'};">${g.correct?'✅':'❌'} ${escapeHtml(g.guess)}</div>`).join('')}</div>` : '<div class="small" style="margin-top:4px;">추측 없음</div>'}
+      </div>
       ${actionHtml ? `<div style="margin-top:10px;">${actionHtml}</div>` : ''}
     </div>`;
   }).join('') || '<p class="small">등록된 조가 없습니다.</p>';
