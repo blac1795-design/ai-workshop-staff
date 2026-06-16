@@ -29,6 +29,7 @@
   .warn.red{background:#fef2f2;border-color:#fecaca;color:#991b1b;}
   .badge{display:inline-block;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:700;background:#eef2ff;color:#4338ca;}
   .badge.lunch{background:#fffbeb;color:#b45309;}
+  .badge.firstThird{background:#f0fdf4;color:#15803d;}
   .msg{font-size:14px;margin-top:6px;}
   .msg.error{color:var(--red);}
   .hint-tag{display:block;background:#eef2ff;color:#4338ca;padding:12px 14px;border-radius:10px;font-size:14px;margin-bottom:8px;line-height:1.5;}
@@ -339,13 +340,13 @@ function renderMission(st){
   const el = document.getElementById('missionCard');
   if(st.missionStatus === 'none'){
     el.innerHTML = `<h2>다음 미션을 받아보세요</h2>
-      <p class="small">버튼을 누르면 랜덤 미션이 배정됩니다. 2번째 미션은 점심식사 미션 중에서 자동으로 배정됩니다.</p>
+      <p class="small">버튼을 누르면 미션이 배정됩니다. 1·3번째는 특별 미션, 2번째는 점심식사 미션, 4번째부터는 랜덤 미션입니다.</p>
       <button class="btn" onclick="assignMission()">🎲 미션 받기</button>
       <div class="msg error" id="missionMsg"></div>`;
   }else if(st.missionStatus === 'assigned'){
     const m = st.currentMission;
     el.innerHTML = `
-      <span class="badge ${m.source==='lunch'?'lunch':''}">${m.source==='lunch'?'🍱 점심식사 미션':'🎯 랜덤 미션'}</span>
+      <span class="badge ${m.source==='lunch'?'lunch':m.source==='firstThird'?'firstThird':''}">${m.source==='lunch'?'🍱 점심식사 미션':m.source==='firstThird'?'🥇 특별 미션':'🎯 랜덤 미션'}</span>
       <h2 style="margin-top:10px;">${escapeHtml(m.title)}</h2>
       <p>${escapeHtml(m.description||'')}</p>
       <button class="btn secondary" id="redrawBtn" onclick="redraw()" ${st.redrawUsed?'disabled':''}>

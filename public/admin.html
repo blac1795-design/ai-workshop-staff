@@ -133,25 +133,25 @@
 
     <!-- ===================== 미션 풀 ===================== -->
     <div class="panel" id="panel-missions">
+      <div class="card" style="border:2px solid #6366f1;margin-bottom:14px;">
+        <h2>🥇 1·3번째 미션 풀 (1번째, 3번째 미션 전용)</h2>
+        <p class="small">1번째와 3번째 미션은 이 풀에서 랜덤으로 배정됩니다.</p>
+        <div class="row">
+          <input id="ftTitle" placeholder="미션 제목" />
+        </div>
+        <textarea id="ftDesc" placeholder="미션 상세 설명"></textarea>
+        <div class="row" style="margin-top:8px;">
+          <input type="file" id="ftImageFile" accept="image/*" style="flex:2;" />
+          <button class="btn" onclick="addMission('firstThirdMissionPool')">추가</button>
+        </div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>제목</th><th>설명</th><th>이미지</th><th></th></tr></thead>
+          <tbody id="firstThirdPoolBody"></tbody>
+        </table></div>
+      </div>
       <div class="grid2">
         <div class="card">
-          <h2>랜덤 미션 풀 (2단계 이후)</h2>
-          <div class="row">
-            <input id="missionTitle" placeholder="미션 제목" />
-          </div>
-          <textarea id="missionDesc" placeholder="미션 상세 설명"></textarea>
-          <div class="row" style="margin-top:8px;">
-            <input type="file" id="missionImageFile" accept="image/*" style="flex:2;" />
-            <button class="btn" onclick="addMission('missionPool')">추가</button>
-          </div>
-          <div class="tbl-wrap"><table>
-            <thead><tr><th>제목</th><th>설명</th><th>이미지</th><th></th></tr></thead>
-            <tbody id="missionPoolBody"></tbody>
-          </table></div>
-        </div>
-
-        <div class="card">
-          <h2>점심식사 미션 풀 (2번째 미션 전용)</h2>
+          <h2>🍱 점심식사 미션 풀 (2번째 미션 전용)</h2>
           <div class="row">
             <input id="lunchTitle" placeholder="미션 제목" />
           </div>
@@ -163,6 +163,22 @@
           <div class="tbl-wrap"><table>
             <thead><tr><th>제목</th><th>설명</th><th>이미지</th><th></th></tr></thead>
             <tbody id="lunchPoolBody"></tbody>
+          </table></div>
+        </div>
+
+        <div class="card">
+          <h2>🎲 랜덤 미션 풀 (4번째 미션부터)</h2>
+          <div class="row">
+            <input id="missionTitle" placeholder="미션 제목" />
+          </div>
+          <textarea id="missionDesc" placeholder="미션 상세 설명"></textarea>
+          <div class="row" style="margin-top:8px;">
+            <input type="file" id="missionImageFile" accept="image/*" style="flex:2;" />
+            <button class="btn" onclick="addMission('missionPool')">추가</button>
+          </div>
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>제목</th><th>설명</th><th>이미지</th><th></th></tr></thead>
+            <tbody id="missionPoolBody"></tbody>
           </table></div>
         </div>
       </div>
@@ -410,13 +426,20 @@ async function deleteParticipant(id){
 async function loadMissions(){
   const random = await api('/api/admin/missions');
   const lunch = await api('/api/admin/lunch-missions');
+  const firstThird = await api('/api/admin/first-third-missions');
   renderMissionTable('missionPoolBody', random, 'missionPool');
   renderMissionTable('lunchPoolBody', lunch, 'lunchMissionPool');
+  renderMissionTable('firstThirdPoolBody', firstThird, 'firstThirdMissionPool');
 }
+const POOL_ENDPOINT = {
+  missionPool: '/api/admin/missions',
+  lunchMissionPool: '/api/admin/lunch-missions',
+  firstThirdMissionPool: '/api/admin/first-third-missions'
+};
 function renderMissionTable(bodyId, list, poolKey){
   const body = document.getElementById(bodyId);
   body.innerHTML='';
-  const endpoint = poolKey==='missionPool' ? '/api/admin/missions' : '/api/admin/lunch-missions';
+  const endpoint = POOL_ENDPOINT[poolKey] || '/api/admin/missions';
   list.forEach(m=>{
     const imgHtml = m.image ? `<img src="${m.image}" style="max-width:60px;max-height:60px;border-radius:6px;display:block;margin-bottom:4px;" />` : '';
     const removeBtn = m.image ? `<button class="btn danger" style="font-size:11px;padding:4px 8px;margin-top:4px;" onclick="removeMissionImage('${endpoint}','${m.id}')">이미지 제거</button>` : '';
@@ -430,12 +453,13 @@ function renderMissionTable(bodyId, list, poolKey){
 }
 async function addMission(poolKey){
   const isLunch = poolKey==='lunchMissionPool';
-  const titleEl = document.getElementById(isLunch?'lunchTitle':'missionTitle');
-  const descEl = document.getElementById(isLunch?'lunchDesc':'missionDesc');
-  const fileEl = document.getElementById(isLunch?'lunchImageFile':'missionImageFile');
+  const isFirstThird = poolKey==='firstThirdMissionPool';
+  const titleEl = document.getElementById(isLunch?'lunchTitle': isFirstThird?'ftTitle':'missionTitle');
+  const descEl = document.getElementById(isLunch?'lunchDesc': isFirstThird?'ftDesc':'missionDesc');
+  const fileEl = document.getElementById(isLunch?'lunchImageFile': isFirstThird?'ftImageFile':'missionImageFile');
   const title = titleEl.value.trim();
   if(!title) return;
-  const endpoint = isLunch ? '/api/admin/lunch-missions' : '/api/admin/missions';
+  const endpoint = POOL_ENDPOINT[poolKey] || '/api/admin/missions';
   let image = null;
   if(fileEl.files.length){
     const fd = new FormData();
