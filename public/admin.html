@@ -244,7 +244,7 @@
 
     <div class="panel" id="panel-monitor">
       <div class="card">
-        <h2>조별 진행 현황 <button class="btn secondary" style="float:right;" onclick="loadProgress()">새로고침</button></h2>
+        <h2>조별 진행 현황 <span id="monitorAutoLabel" class="small" style="font-weight:400;color:var(--green);margin-left:8px;">🔄 자동갱신 중</span><button class="btn secondary" style="float:right;" onclick="loadProgress()">새로고침</button></h2>
         <div id="progressList"></div>
       </div>
     </div>
@@ -287,13 +287,23 @@ function logout(){
 }
 
 // tab switching
+let monitorPollTimer = null;
+function startMonitorPoll(){
+  if(monitorPollTimer) return;
+  monitorPollTimer = setInterval(loadProgress, 8000);
+}
+function stopMonitorPoll(){
+  if(monitorPollTimer){ clearInterval(monitorPollTimer); monitorPollTimer=null; }
+}
+
 document.querySelectorAll('.tab-btn').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
     document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
-    if(btn.dataset.tab==='monitor') loadProgress();
+    if(btn.dataset.tab==='monitor'){ loadProgress(); startMonitorPoll(); }
+    else stopMonitorPoll();
   });
 });
 
