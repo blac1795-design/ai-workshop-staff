@@ -70,11 +70,9 @@ function summarizeState(state) {
 
 function pickPoolForNextMission(db, state) {
   const nextStep = state.assignedMissionIds.length; // 0-indexed slot about to be filled
-  // 1st (index 0) and 3rd (index 2): firstThirdMissionPool
-  if (nextStep === 0 || nextStep === 2) return { key: 'firstThirdMissionPool', source: 'firstThird' };
-  // 2nd (index 1): lunch pool
+  if (nextStep === 0) return { key: 'firstMissionPool', source: 'first' };
   if (nextStep === 1) return { key: 'lunchMissionPool', source: 'lunch' };
-  // 4th onwards: general random pool
+  if (nextStep === 2) return { key: 'thirdMissionPool', source: 'third' };
   return { key: 'missionPool', source: 'random' };
 }
 
@@ -89,7 +87,8 @@ async function requireAdmin(req, res, next) {
       return res.status(401).json({ error: '관리자 인증이 필요합니다' });
     }
     // 신규 풀 필드 없으면 초기화 (기존 DB 하위 호환)
-    if (!db.firstThirdMissionPool) db.firstThirdMissionPool = [];
+    if (!db.firstMissionPool) db.firstMissionPool = [];
+    if (!db.thirdMissionPool) db.thirdMissionPool = [];
     req.db = db;
     next();
   } catch (e) {
@@ -250,7 +249,8 @@ function poolRoutes(poolKey, basePath) {
 }
 poolRoutes('missionPool', '/api/admin/missions');
 poolRoutes('lunchMissionPool', '/api/admin/lunch-missions');
-poolRoutes('firstThirdMissionPool', '/api/admin/first-third-missions');
+poolRoutes('firstMissionPool', '/api/admin/first-missions');
+poolRoutes('thirdMissionPool', '/api/admin/third-missions');
 
 // ---------------------------------------------------------------------------
 // hint pool
@@ -598,7 +598,8 @@ app.post('/api/team/:team/mission/assign', async (req, res) => {
     });
   }
 
-  if (!db.firstThirdMissionPool) db.firstThirdMissionPool = [];
+  if (!db.firstMissionPool) db.firstMissionPool = [];
+  if (!db.thirdMissionPool) db.thirdMissionPool = [];
   const { key, source } = pickPoolForNextMission(db, state);
   const pool = db[key] || [];
   const available = pool.filter((m) => !state.assignedMissionIds.includes(m.id));
@@ -633,7 +634,8 @@ app.post('/api/team/:team/mission/redraw', async (req, res) => {
   if (state.missionStatus !== 'assigned') return res.status(400).json({ error: '현재 재추첨할 수 있는 상태가 아닙니다' });
 
   const poolKey = state.currentMission.source === 'lunch' ? 'lunchMissionPool'
-    : state.currentMission.source === 'firstThird' ? 'firstThirdMissionPool'
+    : state.currentMission.source === 'first' ? 'firstMissionPool'
+    : state.currentMission.source === 'third' ? 'thirdMissionPool'
     : 'missionPool';
   const pool = db[poolKey];
   const available = pool.filter((m) => !state.assignedMissionIds.includes(m.id));

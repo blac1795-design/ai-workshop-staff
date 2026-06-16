@@ -133,28 +133,24 @@
 
     <!-- ===================== 미션 풀 ===================== -->
     <div class="panel" id="panel-missions">
-      <div class="card" style="border:2px solid #6366f1;margin-bottom:14px;">
-        <h2>🥇 1·3번째 미션 풀 (1번째, 3번째 미션 전용)</h2>
-        <p class="small">1번째와 3번째 미션은 이 풀에서 랜덤으로 배정됩니다.</p>
-        <div class="row">
-          <input id="ftTitle" placeholder="미션 제목" />
-        </div>
-        <textarea id="ftDesc" placeholder="미션 상세 설명"></textarea>
-        <div class="row" style="margin-top:8px;">
-          <input type="file" id="ftImageFile" accept="image/*" style="flex:2;" />
-          <button class="btn" onclick="addMission('firstThirdMissionPool')">추가</button>
-        </div>
-        <div class="tbl-wrap"><table>
-          <thead><tr><th>제목</th><th>설명</th><th>이미지</th><th></th></tr></thead>
-          <tbody id="firstThirdPoolBody"></tbody>
-        </table></div>
-      </div>
       <div class="grid2">
-        <div class="card">
-          <h2>🍱 점심식사 미션 풀 (2번째 미션 전용)</h2>
-          <div class="row">
-            <input id="lunchTitle" placeholder="미션 제목" />
+        <div class="card" style="border:2px solid #6366f1;">
+          <h2>1️⃣ 1번째 미션 풀 (1번째 미션 전용)</h2>
+          <div class="row"><input id="firstTitle" placeholder="미션 제목" /></div>
+          <textarea id="firstDesc" placeholder="미션 상세 설명"></textarea>
+          <div class="row" style="margin-top:8px;">
+            <input type="file" id="firstImageFile" accept="image/*" style="flex:2;" />
+            <button class="btn" onclick="addMission('firstMissionPool')">추가</button>
           </div>
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>제목</th><th>설명</th><th>이미지</th><th></th></tr></thead>
+            <tbody id="firstPoolBody"></tbody>
+          </table></div>
+        </div>
+
+        <div class="card" style="border:2px solid #f59e0b;">
+          <h2>🍱 2번째 미션 풀 (점심식사 전용)</h2>
+          <div class="row"><input id="lunchTitle" placeholder="미션 제목" /></div>
           <textarea id="lunchDesc" placeholder="미션 상세 설명"></textarea>
           <div class="row" style="margin-top:8px;">
             <input type="file" id="lunchImageFile" accept="image/*" style="flex:2;" />
@@ -166,11 +162,23 @@
           </table></div>
         </div>
 
+        <div class="card" style="border:2px solid #10b981;">
+          <h2>3️⃣ 3번째 미션 풀 (3번째 미션 전용)</h2>
+          <div class="row"><input id="thirdTitle" placeholder="미션 제목" /></div>
+          <textarea id="thirdDesc" placeholder="미션 상세 설명"></textarea>
+          <div class="row" style="margin-top:8px;">
+            <input type="file" id="thirdImageFile" accept="image/*" style="flex:2;" />
+            <button class="btn" onclick="addMission('thirdMissionPool')">추가</button>
+          </div>
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>제목</th><th>설명</th><th>이미지</th><th></th></tr></thead>
+            <tbody id="thirdPoolBody"></tbody>
+          </table></div>
+        </div>
+
         <div class="card">
           <h2>🎲 랜덤 미션 풀 (4번째 미션부터)</h2>
-          <div class="row">
-            <input id="missionTitle" placeholder="미션 제목" />
-          </div>
+          <div class="row"><input id="missionTitle" placeholder="미션 제목" /></div>
           <textarea id="missionDesc" placeholder="미션 상세 설명"></textarea>
           <div class="row" style="margin-top:8px;">
             <input type="file" id="missionImageFile" accept="image/*" style="flex:2;" />
@@ -424,17 +432,22 @@ async function deleteParticipant(id){
 
 // ---------- missions ----------
 async function loadMissions(){
-  const random = await api('/api/admin/missions');
-  const lunch = await api('/api/admin/lunch-missions');
-  const firstThird = await api('/api/admin/first-third-missions');
+  const [random, lunch, first, third] = await Promise.all([
+    api('/api/admin/missions'),
+    api('/api/admin/lunch-missions'),
+    api('/api/admin/first-missions'),
+    api('/api/admin/third-missions')
+  ]);
   renderMissionTable('missionPoolBody', random, 'missionPool');
   renderMissionTable('lunchPoolBody', lunch, 'lunchMissionPool');
-  renderMissionTable('firstThirdPoolBody', firstThird, 'firstThirdMissionPool');
+  renderMissionTable('firstPoolBody', first, 'firstMissionPool');
+  renderMissionTable('thirdPoolBody', third, 'thirdMissionPool');
 }
 const POOL_ENDPOINT = {
   missionPool: '/api/admin/missions',
   lunchMissionPool: '/api/admin/lunch-missions',
-  firstThirdMissionPool: '/api/admin/first-third-missions'
+  firstMissionPool: '/api/admin/first-missions',
+  thirdMissionPool: '/api/admin/third-missions'
 };
 function renderMissionTable(bodyId, list, poolKey){
   const body = document.getElementById(bodyId);
@@ -451,12 +464,17 @@ function renderMissionTable(bodyId, list, poolKey){
     </tr>`;
   });
 }
+const POOL_INPUT_PREFIX = {
+  missionPool: 'mission',
+  lunchMissionPool: 'lunch',
+  firstMissionPool: 'first',
+  thirdMissionPool: 'third'
+};
 async function addMission(poolKey){
-  const isLunch = poolKey==='lunchMissionPool';
-  const isFirstThird = poolKey==='firstThirdMissionPool';
-  const titleEl = document.getElementById(isLunch?'lunchTitle': isFirstThird?'ftTitle':'missionTitle');
-  const descEl = document.getElementById(isLunch?'lunchDesc': isFirstThird?'ftDesc':'missionDesc');
-  const fileEl = document.getElementById(isLunch?'lunchImageFile': isFirstThird?'ftImageFile':'missionImageFile');
+  const prefix = POOL_INPUT_PREFIX[poolKey] || 'mission';
+  const titleEl = document.getElementById(prefix+'Title');
+  const descEl = document.getElementById(prefix+'Desc');
+  const fileEl = document.getElementById(prefix+'ImageFile');
   const title = titleEl.value.trim();
   if(!title) return;
   const endpoint = POOL_ENDPOINT[poolKey] || '/api/admin/missions';
