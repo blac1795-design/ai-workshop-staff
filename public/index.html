@@ -346,7 +346,7 @@ function renderMission(st){
   }else if(st.missionStatus === 'assigned'){
     const m = st.currentMission;
     el.innerHTML = `
-      <span class="badge ${m.source==='lunch'?'lunch':m.source==='first'?'first':m.source==='third'?'third':''}">${m.source==='lunch'?'🍱 2번째 미션':m.source==='first'?'1️⃣ 1번째 미션':m.source==='third'?'3️⃣ 3번째 미션':'🎲 랜덤 미션'}</span>
+      <span class="badge ${m.source==='lunch'?'lunch':m.source==='first'?'first':m.source==='third'?'third':''}">${m.source==='lunch'?'2번째 미션':m.source==='first'?'1️⃣ 1번째 미션':m.source==='third'?'3️⃣ 3번째 미션':'🎲 랜덤 미션'}</span>
       <h2 style="margin-top:10px;">${escapeHtml(m.title)}</h2>
       <p>${escapeHtml(m.description||'')}</p>
       <button class="btn secondary" id="redrawBtn" onclick="redraw()" ${st.redrawUsed?'disabled':''}>
