@@ -341,13 +341,12 @@ function renderMission(st){
   const el = document.getElementById('missionCard');
   if(st.missionStatus === 'none'){
     el.innerHTML = `<h2>다음 미션을 받아보세요</h2>
-      <p class="small">버튼을 누르면 미션이 배정됩니다. 1·3번째는 특별 미션, 2번째는 점심식사 미션, 4번째부터는 랜덤 미션입니다.</p>
       <button class="btn" onclick="assignMission()">🎲 미션 받기</button>
       <div class="msg error" id="missionMsg"></div>`;
   }else if(st.missionStatus === 'assigned'){
     const m = st.currentMission;
     el.innerHTML = `
-      <span class="badge ${m.source==='lunch'?'lunch':m.source==='first'?'first':m.source==='third'?'third':''}">${m.source==='lunch'?'🍱 2번째 미션 (점심식사)':m.source==='first'?'1️⃣ 1번째 미션':m.source==='third'?'3️⃣ 3번째 미션':'🎲 랜덤 미션'}</span>
+      <span class="badge ${m.source==='lunch'?'lunch':m.source==='first'?'first':m.source==='third'?'third':''}">${m.source==='lunch'?'🍱 2번째 미션':m.source==='first'?'1️⃣ 1번째 미션':m.source==='third'?'3️⃣ 3번째 미션':'🎲 랜덤 미션'}</span>
       <h2 style="margin-top:10px;">${escapeHtml(m.title)}</h2>
       <p>${escapeHtml(m.description||'')}</p>
       <button class="btn secondary" id="redrawBtn" onclick="redraw()" ${st.redrawUsed?'disabled':''}>
