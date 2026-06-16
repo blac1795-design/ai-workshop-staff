@@ -11,42 +11,53 @@
   }
   *{box-sizing:border-box;}
   body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:var(--bg);color:var(--text);}
-  header{background:var(--primary);color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;}
-  header h1{font-size:18px;margin:0;}
-  header button{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.4);color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;}
-  #loginScreen{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:12px;}
-  #loginScreen .box{background:var(--card);padding:32px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.06);width:320px;text-align:center;}
-  #loginScreen input{width:100%;padding:10px;margin:12px 0;border:1px solid var(--border);border-radius:8px;font-size:14px;}
-  #loginScreen button{width:100%;padding:10px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:14px;cursor:pointer;}
-  #app{display:none;max-width:1100px;margin:0 auto;padding:20px;}
-  .tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
-  .tabs button{padding:8px 16px;border:1px solid var(--border);background:#fff;border-radius:8px;cursor:pointer;font-size:13px;color:var(--text);}
+  header{background:var(--primary);color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;}
+  header button{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.4);color:#fff;padding:8px 14px;border-radius:6px;cursor:pointer;font-size:13px;touch-action:manipulation;}
+  #loginScreen{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:12px;padding:16px;}
+  #loginScreen .box{background:var(--card);padding:28px 24px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.06);width:100%;max-width:360px;text-align:center;}
+  #loginScreen input{width:100%;padding:12px;margin:10px 0;border:1px solid var(--border);border-radius:8px;font-size:16px;-webkit-appearance:none;}
+  #loginScreen button{width:100%;padding:12px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;touch-action:manipulation;}
+  #app{display:none;}
+  .app-inner{max-width:1100px;margin:0 auto;padding:16px;}
+  .tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+  .tabs button{padding:8px 14px;border:1px solid var(--border);background:#fff;border-radius:8px;cursor:pointer;font-size:13px;color:var(--text);white-space:nowrap;touch-action:manipulation;}
   .tabs button.active{background:var(--primary);color:#fff;border-color:var(--primary);}
   .panel{display:none;}
   .panel.active{display:block;}
-  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px;}
   .card h2{margin:0 0 12px;font-size:15px;}
   .card h3{margin:18px 0 8px;font-size:13px;color:var(--muted);}
-  table{width:100%;border-collapse:collapse;font-size:13px;}
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  table{width:100%;border-collapse:collapse;font-size:13px;min-width:400px;}
   th,td{padding:8px 6px;border-bottom:1px solid var(--border);text-align:left;vertical-align:middle;}
   th{color:var(--muted);font-weight:600;font-size:12px;}
-  input,select,textarea{padding:7px 9px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit;}
+  input,select,textarea{padding:9px 10px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-family:inherit;-webkit-appearance:none;}
   textarea{width:100%;min-height:50px;resize:vertical;}
   .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px;}
   .row input,.row select{flex:1;min-width:80px;}
-  button.btn{padding:7px 14px;border:none;border-radius:6px;background:var(--primary);color:#fff;cursor:pointer;font-size:13px;}
+  button.btn{padding:9px 14px;border:none;border-radius:6px;background:var(--primary);color:#fff;cursor:pointer;font-size:13px;font-weight:600;touch-action:manipulation;white-space:nowrap;}
   button.btn.secondary{background:#fff;border:1px solid var(--border);color:var(--text);}
   button.btn.danger{background:var(--red);}
   button.btn.green{background:var(--green);}
   button.btn:disabled{opacity:.5;cursor:not-allowed;}
-  .pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;}
+  .pill{display:inline-block;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:600;}
   .pill.none{background:#eef2ff;color:#4338ca;}
   .pill.assigned{background:#fef3c7;color:var(--amber);}
   .pill.pending{background:#fee2e2;color:var(--red);}
   .pill.approved{background:#dcfce7;color:var(--green);}
   .small{font-size:12px;color:var(--muted);}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-  @media(max-width:800px){.grid2{grid-template-columns:1fr;}}
+  @media(max-width:800px){
+    .grid2{grid-template-columns:1fr;}
+    table{min-width:320px;}
+  }
+  @media(max-width:480px){
+    .app-inner{padding:10px;}
+    .card{padding:12px;}
+    header h1{font-size:14px;}
+    .tabs button{padding:7px 10px;font-size:12px;}
+  }
   .msg{font-size:13px;margin-top:6px;}
   .msg.error{color:var(--red);}
   .msg.ok{color:var(--green);}
@@ -72,7 +83,7 @@
     <button onclick="logout()">로그아웃</button>
   </header>
 
-  <div style="padding:20px 24px;max-width:1100px;margin:0 auto;">
+  <div class="app-inner">
     <div class="tabs">
       <button class="tab-btn active" data-tab="participants">참여자 / 조 관리</button>
       <button class="tab-btn" data-tab="missions">미션 풀</button>
@@ -89,11 +100,11 @@
             <input id="newTeamName" placeholder="새 조 이름 (예: 4조)" />
             <button class="btn" onclick="addTeam()">추가</button>
           </div>
-          <table>
+          <div class="tbl-wrap"><table>
             <thead><tr><th>조</th><th>인원</th><th>조장</th><th></th></tr></thead>
             <tbody id="teamTableBody"></tbody>
             <tfoot id="teamTableFoot"></tfoot>
-          </table>
+          </table></div>
         </div>
 
         <div class="card">
@@ -113,10 +124,10 @@
 
       <div class="card">
         <h2>참여자 목록</h2>
-        <table>
+        <div class="tbl-wrap"><table>
           <thead><tr><th>이름</th><th>부여코드</th><th>소속 조</th><th>조장</th><th></th></tr></thead>
           <tbody id="participantTableBody"></tbody>
-        </table>
+        </table></div>
       </div>
     </div>
 
@@ -133,10 +144,10 @@
             <input type="file" id="missionImageFile" accept="image/*" style="flex:2;" />
             <button class="btn" onclick="addMission('missionPool')">추가</button>
           </div>
-          <table>
+          <div class="tbl-wrap"><table>
             <thead><tr><th>제목</th><th>설명</th><th>이미지</th><th></th></tr></thead>
             <tbody id="missionPoolBody"></tbody>
-          </table>
+          </table></div>
         </div>
 
         <div class="card">
@@ -149,10 +160,10 @@
             <input type="file" id="lunchImageFile" accept="image/*" style="flex:2;" />
             <button class="btn" onclick="addMission('lunchMissionPool')">추가</button>
           </div>
-          <table>
+          <div class="tbl-wrap"><table>
             <thead><tr><th>제목</th><th>설명</th><th>이미지</th><th></th></tr></thead>
             <tbody id="lunchPoolBody"></tbody>
-          </table>
+          </table></div>
         </div>
       </div>
     </div>
@@ -167,10 +178,10 @@
           <button class="btn" onclick="addDestination()">추가</button>
         </div>
         <div class="msg" id="destMsg"></div>
-        <table style="margin-top:8px;">
+        <div class="tbl-wrap"><table style="margin-top:8px;">
           <thead><tr><th>정답</th><th></th></tr></thead>
           <tbody id="destAnswerBody"></tbody>
-        </table>
+        </table></div>
       </div>
       <div class="grid2">
         <div class="card">
@@ -182,10 +193,10 @@
             <input type="file" id="hintImageFile" accept="image/*" style="flex:3;" />
             <button class="btn" onclick="addHint()">추가</button>
           </div>
-          <table>
+          <div class="tbl-wrap"><table>
             <thead><tr><th>내용</th><th>이미지</th><th></th></tr></thead>
             <tbody id="hintPoolBody"></tbody>
-          </table>
+          </table></div>
         </div>
 
         <div class="card">
@@ -196,10 +207,10 @@
             <select id="ruleHint" style="flex:2;"></select>
             <button class="btn" onclick="addRule()">조건 추가</button>
           </div>
-          <table>
+          <div class="tbl-wrap"><table>
             <thead><tr><th>조건</th><th>발송 힌트</th><th></th></tr></thead>
             <tbody id="ruleTableBody"></tbody>
-          </table>
+          </table></div>
         </div>
       </div>
     </div>
@@ -600,15 +611,15 @@ async function loadProgress(){
                      <button class="btn danger" onclick="rejectTeam('${encodeURIComponent(p.team)}')">↩️ 반려(재제출)</button>`;
     }
     return `<div class="card" style="margin-bottom:10px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <strong>${escapeHtml(p.team)}</strong>
-        <div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
+        <strong style="font-size:16px;">${escapeHtml(p.team)}</strong>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
           <span class="pill ${p.missionStatus}">${statusLabel[p.missionStatus]||p.missionStatus}</span>
-          <button class="btn secondary" style="margin-left:6px;" onclick="resetProgress('${encodeURIComponent(p.team)}')">🔄 미션 진행 초기화</button>
+          <button class="btn secondary" onclick="resetProgress('${encodeURIComponent(p.team)}')">🔄 미션 초기화</button>
         </div>
       </div>
       <div style="margin-top:8px;border:1px solid var(--border);border-radius:8px;padding:8px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
           <strong class="small">📸 0단계 · 조원 찾기 인증사진</strong>
           <span class="pill ${tf.status}">${tfStatusLabel[tf.status]||tf.status}</span>
         </div>
