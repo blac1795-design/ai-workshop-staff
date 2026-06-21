@@ -662,7 +662,7 @@ app.post('/api/team/:team/mission/redraw', async (req, res) => {
 });
 
 // submit photo/video (file upload) or external link
-app.post('/api/team/:team/mission/submit', upload.array('media', 2), async (req, res) => {
+app.post('/api/team/:team/mission/submit', upload.array('media', 3), async (req, res) => {
   const team = decodeURIComponent(req.params.team);
   const db = await load();
   if (!db.teams.includes(team)) return res.status(404).json({ error: '존재하지 않는 조입니다' });

@@ -355,8 +355,10 @@ function renderMission(st){
       <div class="note">⚠️ 재추첨은 단 1회만 가능합니다</div>
       <hr style="border:none;border-top:1px solid var(--border);margin:16px 0;" />
       <h2>미션 수행 결과 제출</h2>
-      <p class="small">사진/영상(최대 2개), 외부 링크, 메모 중 하나 이상을 입력하면 제출할 수 있습니다.</p>
-      <input type="file" id="mediaFile" accept="image/*,video/*" multiple />
+      <p class="small">사진/영상, 외부 링크, 메모 중 하나 이상을 입력하면 제출할 수 있습니다.</p>
+      <input type="file" id="mediaFile1" accept="image/*,video/*" style="margin-bottom:8px;" />
+      <input type="file" id="mediaFile2" accept="image/*,video/*" style="margin-bottom:8px;" />
+      <input type="file" id="mediaFile3" accept="image/*,video/*" />
       <div class="small" style="margin:6px 0;">또는</div>
       <input type="text" id="mediaLink" placeholder="사진/영상 외부 링크 (URL)" />
       <textarea id="mediaNote" placeholder="메모 (선택, 메모만 제출도 가능)"></textarea>
@@ -388,15 +390,15 @@ async function redraw(){
 }
 
 async function submitMission(){
-  const fileEl = document.getElementById('mediaFile');
+  const fileEls = [document.getElementById('mediaFile1'), document.getElementById('mediaFile2'), document.getElementById('mediaFile3')];
+  const files = fileEls.filter(el=>el && el.files.length).map(el=>el.files[0]);
   const link = document.getElementById('mediaLink').value.trim();
   const note = document.getElementById('mediaNote').value.trim();
   const msg = document.getElementById('missionMsg');
   msg.textContent='';
-  if(fileEl.files.length > 2){ msg.textContent='사진/영상은 최대 2개까지 첨부할 수 있습니다'; return; }
-  if(!fileEl.files.length && !link && !note){ msg.textContent='사진/영상, 링크, 메모 중 하나 이상을 입력해주세요'; return; }
+  if(!files.length && !link && !note){ msg.textContent='사진/영상, 링크, 메모 중 하나 이상을 입력해주세요'; return; }
   const fd = new FormData();
-  for(const f of fileEl.files) fd.append('media', f);
+  for(const f of files) fd.append('media', f);
   if(link) fd.append('link', link);
   fd.append('note', note);
   try{
