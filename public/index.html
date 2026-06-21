@@ -157,6 +157,35 @@ let pollTimer = null;
 let tfPollTimer = null;
 let lastHintCount = 0;
 
+// 이미지 파일을 브라우저에서 리사이즈/압축한다 (휴대폰 원본 사진은 3~10MB라 서버 업로드 용량 제한에 걸리기 쉬움)
+function compressImage(file, maxDim=1600, quality=0.7){
+  if(!file || !file.type || !file.type.startsWith('image/')) return Promise.resolve(file);
+  return new Promise((resolve)=>{
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = (e)=>{
+      img.onload = ()=>{
+        let { width, height } = img;
+        if(width > maxDim || height > maxDim){
+          if(width > height){ height = Math.round(height * maxDim / width); width = maxDim; }
+          else { width = Math.round(width * maxDim / height); height = maxDim; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        canvas.toBlob((blob)=>{
+          if(!blob){ resolve(file); return; }
+          resolve(new File([blob], (file.name||'photo').replace(/\.[^.]+$/, '')+'.jpg', { type:'image/jpeg' }));
+        }, 'image/jpeg', quality);
+      };
+      img.onerror = ()=> resolve(file);
+      img.src = e.target.result;
+    };
+    reader.onerror = ()=> resolve(file);
+    reader.readAsDataURL(file);
+  });
+}
+
 function api(path, opts={}){
   if(opts.body && !(opts.body instanceof FormData)){
     opts.headers = Object.assign({}, opts.headers, {'Content-Type':'application/json'});
@@ -164,7 +193,7 @@ function api(path, opts={}){
   }
   return fetch(path, opts).then(async r=>{
     const data = await r.json().catch(()=>({}));
-    if(!r.ok) throw new Error(data.error || '오류가 발생했습니다');
+    if(!r.ok) throw new Error(data.error || (r.status===413 ? '파일 용량이 너무 큽니다. 사진 개수를 줄이거나 잠시 후 다시 시도해주세요' : '오류가 발생했습니다'));
     return data;
   });
 }
@@ -254,18 +283,21 @@ async function submitTeamFinding(){
   const link = document.getElementById('tfMediaLink').value.trim();
   const note = document.getElementById('tfMediaNote').value.trim();
   const msg = document.getElementById('tfMsg');
+  const btn = event ? event.target : null;
   msg.textContent='';
   if(!fileEl.files.length && !link){ msg.textContent='사진 파일 또는 링크를 입력해주세요'; return; }
-  const fd = new FormData();
-  if(fileEl.files.length) fd.append('media', fileEl.files[0]);
-  if(link) fd.append('link', link);
-  fd.append('note', note);
+  if(btn){ btn.disabled=true; btn.textContent='업로드 중...'; }
   try{
+    const fd = new FormData();
+    if(fileEl.files.length) fd.append('media', await compressImage(fileEl.files[0]));
+    if(link) fd.append('link', link);
+    fd.append('note', note);
     const res = await api('/api/team/'+encodeURIComponent(state.team)+'/teamfinding/submit', {method:'POST', body:fd});
     renderTeamFinding(res.teamFinding);
     startTeamFindingPoll();
   }catch(e){
     msg.textContent = e.message;
+    if(btn){ btn.disabled=false; btn.textContent='제출하기'; }
   }
 }
 
@@ -391,21 +423,25 @@ async function redraw(){
 
 async function submitMission(){
   const fileEls = [document.getElementById('mediaFile1'), document.getElementById('mediaFile2'), document.getElementById('mediaFile3')];
-  const files = fileEls.filter(el=>el && el.files.length).map(el=>el.files[0]);
+  const rawFiles = fileEls.filter(el=>el && el.files.length).map(el=>el.files[0]);
   const link = document.getElementById('mediaLink').value.trim();
   const note = document.getElementById('mediaNote').value.trim();
   const msg = document.getElementById('missionMsg');
+  const btn = event ? event.target : null;
   msg.textContent='';
-  if(!files.length && !link && !note){ msg.textContent='사진/영상, 링크, 메모 중 하나 이상을 입력해주세요'; return; }
-  const fd = new FormData();
-  for(const f of files) fd.append('media', f);
-  if(link) fd.append('link', link);
-  fd.append('note', note);
+  if(!rawFiles.length && !link && !note){ msg.textContent='사진/영상, 링크, 메모 중 하나 이상을 입력해주세요'; return; }
+  if(btn){ btn.disabled=true; btn.textContent='업로드 중...'; }
   try{
+    const files = await Promise.all(rawFiles.map(f=>compressImage(f)));
+    const fd = new FormData();
+    for(const f of files) fd.append('media', f);
+    if(link) fd.append('link', link);
+    fd.append('note', note);
     await api('/api/team/'+encodeURIComponent(state.team)+'/mission/submit', {method:'POST', body:fd});
     refreshMission();
   }catch(e){
     msg.textContent = e.message;
+    if(btn){ btn.disabled=false; btn.textContent='제출하기'; }
   }
 }
 
