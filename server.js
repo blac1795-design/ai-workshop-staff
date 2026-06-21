@@ -46,7 +46,8 @@ function getCompletedMissions(state) {
       description: h.detail.mission.description,
       source: h.detail.mission.source,
       successCount: h.detail.successCount,
-      approvedAt: h.at
+      approvedAt: h.at,
+      submission: h.detail.submission || null
     }));
 }
 
@@ -394,7 +395,7 @@ app.post('/api/admin/teams/:team/approve', requireAdmin, async (req, res) => {
   }
 
   state.successCount += 1;
-  logHistory(state, 'mission_approved', { mission: state.currentMission, successCount: state.successCount });
+  logHistory(state, 'mission_approved', { mission: state.currentMission, submission: state.submission, successCount: state.successCount });
 
   // random hint from pool (avoid duplicates already collected, and hints reserved for auto-dispatch rules)
   const collectedIds = state.hintsCollected.map((h) => h.id);

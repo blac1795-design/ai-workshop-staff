@@ -608,35 +608,34 @@ async function deleteRule(id){
 const statusLabel = {none:'대기(다음 미션 받기 가능)', assigned:'미션 수행중', pending:'관리자 확인중', approved:'승인 완료'};
 const tfStatusLabel = {none:'미제출', pending:'확인 요청', approved:'승인 완료'};
 
+function renderSubmissionHtml(sub){
+  if(!sub) return '';
+  if(sub.files){
+    // 신규 형식: 파일 0~2개 + 링크 + 메모 (모두 선택)
+    const parts = [];
+    sub.files.forEach((f,i)=>{
+      parts.push(`<a class="media-link" href="${f.value}" target="_blank">📎 첨부파일 ${i+1} 보기</a>`);
+    });
+    if(sub.link) parts.push(`<a class="media-link" href="${sub.link}" target="_blank">🔗 제출 링크 열기</a>`);
+    let html = parts.join('<br/>');
+    if(sub.note) html += `${html?'<br/>':''}<span class="small">메모: ${escapeHtml(sub.note)}</span>`;
+    return html;
+  }
+  // 구버전 형식 (단일 파일 또는 링크)
+  let html = sub.type==='file'
+    ? `<a class="media-link" href="${sub.value}" target="_blank">📎 업로드된 파일 보기</a>`
+    : (sub.type==='link' ? `<a class="media-link" href="${sub.value}" target="_blank">🔗 제출 링크 열기</a>` : '');
+  if(sub.note) html += `${html?'<br/>':''}<span class="small">메모: ${escapeHtml(sub.note)}</span>`;
+  return html;
+}
+
 async function loadProgress(){
   const progress = await api('/api/admin/progress');
   const el = document.getElementById('progressList');
   el.innerHTML = progress.map(p=>{
     const mission = p.currentMission;
     const tf = p.teamFinding || {status:'none', submission:null};
-    let mediaHtml = '';
-    if(p.submission){
-      const sub = p.submission;
-      if(sub.files){
-        // 신규 형식: 파일 0~2개 + 링크 + 메모 (모두 선택)
-        const parts = [];
-        sub.files.forEach((f,i)=>{
-          parts.push(`<a class="media-link" href="${f.value}" target="_blank">📎 첨부파일 ${i+1} 보기</a>`);
-        });
-        if(sub.link) parts.push(`<a class="media-link" href="${sub.link}" target="_blank">🔗 제출 링크 열기</a>`);
-        mediaHtml = parts.join('<br/>');
-        if(sub.note) mediaHtml += `<div class="small">메모: ${escapeHtml(sub.note)}</div>`;
-        if(!mediaHtml) mediaHtml = '<div class="small">첨부 없음</div>';
-      }else{
-        // 구버전 형식 (단일 파일 또는 링크)
-        if(sub.type==='file'){
-          mediaHtml = `<a class="media-link" href="${sub.value}" target="_blank">📎 업로드된 파일 보기</a>`;
-        }else{
-          mediaHtml = `<a class="media-link" href="${sub.value}" target="_blank">🔗 제출 링크 열기</a>`;
-        }
-        if(sub.note) mediaHtml += `<div class="small">메모: ${escapeHtml(sub.note)}</div>`;
-      }
-    }
+    const mediaHtml = renderSubmissionHtml(p.submission);
     let tfMediaHtml = '';
     if(tf.submission){
       if(tf.submission.type==='file'){
@@ -655,9 +654,15 @@ async function loadProgress(){
       tfActionHtml += `<button class="btn secondary" onclick="resetTeamFinding('${encodeURIComponent(p.team)}')">🔄 초기화</button>`;
     }
     const hintsHtml = p.hintsCollected.map(h=>`<span class="hint-tag ${h.type==='auto'?'auto':''}">${h.type==='auto'?'🔔':'🎁'} ${escapeHtml(h.content)}${h.image?`<br/><img src="${h.image}" style="max-width:80px;max-height:80px;border-radius:6px;margin-top:2px;" />`:''}</span>`).join('') || '<span class="small">아직 없음</span>';
-    const completedHtml = (p.completedMissions||[]).map(m=>
-      `<div class="small" style="margin-top:4px;">✅ <strong>${escapeHtml(m.title)}</strong> (${m.source==='lunch'?'점심':'랜덤'}, ${m.successCount}번째 성공)${m.description?`<div style="color:var(--muted);">${escapeHtml(m.description)}</div>`:''}</div>`
-    ).join('') || '<div class="small">아직 성공한 미션이 없습니다</div>';
+    const sourceLabel = {lunch:'점심', first:'1번째', third:'3번째', random:'랜덤'};
+    const completedHtml = (p.completedMissions||[]).map(m=>{
+      const subHtml = renderSubmissionHtml(m.submission);
+      return `<div class="small" style="margin-top:8px;padding:8px;border:1px solid var(--border);border-radius:6px;">
+        ✅ <strong>${escapeHtml(m.title)}</strong> (${sourceLabel[m.source]||m.source}, ${m.successCount}번째 성공)
+        ${m.description?`<div style="color:var(--muted);">${escapeHtml(m.description)}</div>`:''}
+        ${subHtml ? `<div style="margin-top:6px;"><strong>제출 내용:</strong><br/>${subHtml}</div>` : '<div style="margin-top:6px;color:var(--muted);">제출 내용 없음</div>'}
+      </div>`;
+    }).join('') || '<div class="small">아직 성공한 미션이 없습니다</div>';
     let actionHtml = '';
     if(p.missionStatus==='pending'){
       actionHtml = `<button class="btn green" onclick="approveTeam('${encodeURIComponent(p.team)}')">✅ 승인(성공처리)</button>
@@ -680,7 +685,7 @@ async function loadProgress(){
         ${tfActionHtml ? `<div style="margin-top:8px;">${tfActionHtml}</div>` : ''}
       </div>
       <div class="small" style="margin-top:6px;">진행 미션 수: ${p.missionCount} · 성공 횟수: ${p.successCount} · 재추첨: ${p.redrawUsed?'사용함':'미사용'}</div>
-      ${mission ? `<div style="margin-top:8px;"><strong>현재 미션</strong> (${mission.source==='lunch'?'점심':'랜덤'}): ${escapeHtml(mission.title)}<div class="small">${escapeHtml(mission.description||'')}</div>${mission.image?`<img src="${mission.image}" style="max-width:120px;max-height:120px;border-radius:8px;margin-top:6px;" />`:''}` + `</div>` : '<div class="small" style="margin-top:8px;">현재 배정된 미션 없음</div>'}
+      ${mission ? `<div style="margin-top:8px;"><strong>현재 미션</strong> (${sourceLabel[mission.source]||mission.source}): ${escapeHtml(mission.title)}<div class="small">${escapeHtml(mission.description||'')}</div>${mission.image?`<img src="${mission.image}" style="max-width:120px;max-height:120px;border-radius:8px;margin-top:6px;" />`:''}` + `</div>` : '<div class="small" style="margin-top:8px;">현재 배정된 미션 없음</div>'}
       ${mediaHtml ? `<div style="margin-top:8px;">${mediaHtml}</div>` : ''}
       <div style="margin-top:8px;"><strong class="small">✅ 성공한 미션 목록</strong>${completedHtml}</div>
       <div style="margin-top:8px;"><strong class="small">수집한 힌트</strong><br/>${hintsHtml}</div>
