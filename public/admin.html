@@ -666,7 +666,8 @@ async function loadProgress(){
     let actionHtml = '';
     if(p.missionStatus==='pending'){
       actionHtml = `<button class="btn green" onclick="approveTeam('${encodeURIComponent(p.team)}')">✅ 승인(성공처리)</button>
-                     <button class="btn danger" onclick="rejectTeam('${encodeURIComponent(p.team)}')">↩️ 반려(재제출)</button>`;
+                     <button class="btn danger" onclick="rejectTeam('${encodeURIComponent(p.team)}')">↩️ 반려(재제출)</button>
+                     <button class="btn secondary" onclick="skipTeam('${encodeURIComponent(p.team)}')">⏭️ 넘어가기(실패)</button>`;
     }
     return `<div class="card" style="margin-bottom:10px;">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
@@ -704,6 +705,11 @@ async function approveTeam(team){
 async function rejectTeam(team){
   const note = prompt('반려 사유(선택)') || '';
   await api('/api/admin/teams/'+team+'/reject', {method:'POST', body:{note}});
+  loadProgress();
+}
+async function skipTeam(team){
+  if(!confirm('이 미션을 실패 처리하고 다음 미션으로 넘어갑니다.\n성공 횟수, 힌트, 종착지 추측 기회는 늘어나지 않습니다. 계속할까요?')) return;
+  await api('/api/admin/teams/'+team+'/skip', {method:'POST'});
   loadProgress();
 }
 async function resetProgress(team){

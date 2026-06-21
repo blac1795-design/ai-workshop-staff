@@ -456,6 +456,26 @@ app.post('/api/admin/teams/:team/reject', requireAdmin, async (req, res) => {
   res.json({ ok: true });
 });
 
+// 미션 실패/넘어가기: 성공 횟수, 힌트, 종착지 추측 기회를 늘리지 않고 다음 미션으로 진행
+app.post('/api/admin/teams/:team/skip', requireAdmin, async (req, res) => {
+  const team = decodeURIComponent(req.params.team);
+  const db = req.db;
+  const state = ensureTeamState(db, team);
+  if (state.missionStatus !== 'pending' && state.missionStatus !== 'assigned') {
+    return res.status(400).json({ error: '넘어갈 수 있는 미션이 없습니다' });
+  }
+
+  logHistory(state, 'mission_skipped', { mission: state.currentMission, submission: state.submission });
+
+  state.missionStatus = 'none';
+  state.currentMission = null;
+  state.submission = null;
+  state.lastRejection = null;
+
+  await save(db);
+  res.json({ ok: true });
+});
+
 // 랜덤 미션 진행도 초기화 (2단계 이후 진행상황을 처음 상태로 되돌림. 0단계 조원 찾기 상태는 유지)
 app.post('/api/admin/teams/:team/progress/reset', requireAdmin, async (req, res) => {
   const team = decodeURIComponent(req.params.team);
