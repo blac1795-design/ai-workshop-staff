@@ -64,6 +64,7 @@ function summarizeState(state) {
     completedMissions: getCompletedMissions(state),
     finished: state.finished,
     pendingRejection: (state.lastRejection && !state.lastRejection.acknowledged) ? state.lastRejection : null,
+    pendingSkip: (state.lastSkip && !state.lastSkip.acknowledged) ? state.lastSkip : null,
     destinationGuesses: state.destinationGuesses || [],
     destinationCorrect: state.destinationCorrect || false
   };
@@ -471,6 +472,7 @@ app.post('/api/admin/teams/:team/skip', requireAdmin, async (req, res) => {
   state.currentMission = null;
   state.submission = null;
   state.lastRejection = null;
+  state.lastSkip = { at: new Date().toISOString(), acknowledged: false };
 
   await save(db);
   res.json({ ok: true });
@@ -733,6 +735,19 @@ app.post('/api/team/:team/mission/ack-rejection', async (req, res) => {
   const state = ensureTeamState(db, team);
   if (state.lastRejection) {
     state.lastRejection.acknowledged = true;
+    await save(db);
+  }
+  res.json({ ok: true });
+});
+
+// acknowledge a mission skip (참여자가 넘어가기 안내를 확인했음을 표시)
+app.post('/api/team/:team/mission/ack-skip', async (req, res) => {
+  const team = decodeURIComponent(req.params.team);
+  const db = await load();
+  if (!db.teams.includes(team)) return res.status(404).json({ error: '존재하지 않는 조입니다' });
+  const state = ensureTeamState(db, team);
+  if (state.lastSkip) {
+    state.lastSkip.acknowledged = true;
     await save(db);
   }
   res.json({ ok: true });

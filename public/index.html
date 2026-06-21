@@ -346,6 +346,12 @@ async function checkRejection(st){
       await api('/api/team/'+encodeURIComponent(state.team)+'/mission/ack-rejection', {method:'POST'});
     }catch(e){ /* ignore */ }
   }
+  if(st.pendingSkip){
+    alert('⏭️ 관리자가 이번 미션을 넘어가기 처리했습니다.\n이번 미션은 실패로 처리되어 힌트를 받지 못하고, 종착지 추측 기회도 늘어나지 않습니다.\n다음 미션을 받아주세요.');
+    try{
+      await api('/api/team/'+encodeURIComponent(state.team)+'/mission/ack-skip', {method:'POST'});
+    }catch(e){ /* ignore */ }
+  }
 }
 
 async function refreshMission(){
