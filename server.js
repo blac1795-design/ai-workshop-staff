@@ -150,6 +150,29 @@ app.post('/api/admin/teams', requireAdmin, async (req, res) => {
   res.json({ ok: true });
 });
 
+app.put('/api/admin/teams/:name', requireAdmin, async (req, res) => {
+  const oldName = decodeURIComponent(req.params.name);
+  const { name: newName } = req.body;
+  if (!newName || !newName.trim()) return res.status(400).json({ error: '새 조 이름을 입력하세요' });
+  const trimmed = newName.trim();
+  if (!req.db.teams.includes(oldName)) return res.status(404).json({ error: '조를 찾을 수 없습니다' });
+  if (trimmed !== oldName && req.db.teams.includes(trimmed)) return res.status(400).json({ error: '이미 존재하는 조 이름입니다' });
+
+  const idx = req.db.teams.indexOf(oldName);
+  req.db.teams[idx] = trimmed;
+
+  if (req.db.teamStates[oldName]) {
+    req.db.teamStates[trimmed] = req.db.teamStates[oldName];
+    delete req.db.teamStates[oldName];
+  }
+
+  req.db.participants.forEach((p) => { if (p.team === oldName) p.team = trimmed; });
+  (req.db.hintLog || []).forEach((entry) => { if (entry.team === oldName) entry.team = trimmed; });
+
+  await save(req.db);
+  res.json({ ok: true, name: trimmed });
+});
+
 app.delete('/api/admin/teams/:name', requireAdmin, async (req, res) => {
   const name = decodeURIComponent(req.params.name);
   req.db.teams = req.db.teams.filter((t) => t !== name);

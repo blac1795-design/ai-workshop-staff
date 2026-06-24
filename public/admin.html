@@ -367,7 +367,7 @@ async function loadTeams(){
     totalMembers += t.memberCount;
     const memberNames = (t.members||[]).map(m=>`${escapeHtml(m.name)}${m.isLeader?' 👑조장':''}`).join(', ') || '(인원 없음)';
     body.innerHTML += `<tr>
-        <td>${escapeHtml(t.name)}</td>
+        <td>${escapeHtml(t.name)} <button class="btn secondary" style="font-size:11px;padding:3px 7px;margin-left:4px;" onclick="renameTeam('${encodeURIComponent(t.name)}')">✏️ 변경</button></td>
         <td><a href="#" onclick="toggleMembers(event,${idx})" style="color:var(--primary);text-decoration:underline;">${t.memberCount}명</a></td>
         <td>${t.leaderCount}명</td>
         <td><button class="btn danger" onclick="deleteTeam('${encodeURIComponent(t.name)}')">삭제</button></td>
@@ -390,6 +390,15 @@ async function addTeam(){
   await api('/api/admin/teams', {method:'POST', body:{name}});
   document.getElementById('newTeamName').value='';
   loadTeams();
+}
+async function renameTeam(encodedName){
+  const oldName = decodeURIComponent(encodedName);
+  const newName = prompt('"' + oldName + '" 조의 새 이름을 입력하세요', oldName);
+  if(!newName || newName.trim() === oldName) return;
+  try{
+    await api('/api/admin/teams/'+encodedName, {method:'PUT', body:{name: newName.trim()}});
+    loadTeams(); loadParticipants();
+  }catch(e){ alert('오류: ' + e.message); }
 }
 async function deleteTeam(name){
   if(!confirm('해당 조를 삭제하시겠습니까? (소속 참여자는 미배정 상태가 됩니다)')) return;
